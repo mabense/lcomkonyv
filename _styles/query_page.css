@@ -1,0 +1,247 @@
+:root {
+    --darkest: black;
+    --darker: darkgray;
+    --dark: lightgray;
+    --lightest: white;
+
+    --table-bordercolor: var(--darkest);
+    --table-odd-bg: var(--dark);
+    --table-odd: var(--table-bordercolor);
+    --table-even-bg: var(--darker);
+    --table-even: var(--table-bordercolor);
+
+    --link-bordercolor: var(--text);
+    --link-bg: var(--bg);
+    --link-text: var(--text);
+
+    --link-bordercolor-hover: var(--bg-accent);
+    --link-bg-hover: var(--bg-accent);
+    --link-text-hover: var(--text-accent);
+
+    --link-bordercolor-active: var(--darkest);
+    --link-bg-active: var(--darkest);
+    --link-text-active: var(--lightest);
+
+}
+
+/* box-model, color, text */
+
+#content {
+    padding: 0 3em 3em;
+}
+
+
+#detailedTable,
+.contentTable {
+    border: 2px solid var(--table-bordercolor);
+    text-align: left;
+}
+
+.contentTable th {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* #contentButtons {
+    border: 2px solid var(--link-bordercolor);
+} */
+
+.none_row,
+.odd_row {
+    background-color: var(--table-odd-bg);
+    color: var(--table-odd);
+}
+
+.even_row {
+    background-color: var(--table-even-bg);
+    color: var(--table-even);
+}
+
+/* .a_button,
+.a_button:link,
+.a_button:visited {
+    background-color: var(--link-bg);
+    color: var(--link-text);
+} */
+
+/* .a_button:hover, */
+.odd_row:hover,
+.even_row:hover {
+    border-color: var(--link-bg-hover);
+    background-color: var(--link-bg-hover);
+    color: var(--link-text-hover);
+}
+
+/* #contentButtons:active .a_button:active, */
+.odd_row:active,
+.even_row:active {
+    border-color: var(--darkest);
+    background-color: var(--darkest);
+    color: var(--lightest);
+}
+
+/* layout */
+.a_button,
+#contentButtons {
+    width: 20vw;
+    box-sizing: border-box;
+}
+
+#content,
+#sqlContent,
+#contentContainer,
+.contentTable,
+.contentTable td,
+.contentTable th {
+    width: 100%;
+}
+
+.contentTable td,
+.contentTable th {
+    width: 50%;
+}
+
+#contentContainer {
+    padding: 0 2em 0;
+}
+
+/* */
+
+/* #sqlContent,
+#contentContainer, 
+#contentButtons,
+#contentButtons * {
+    width: 100%;
+}
+
+#contentContainer, 
+#contentButtons {
+    justify-content: space-between;
+}
+
+#contentContainer *, 
+#contentButtons * {
+    padding: 1em;
+    margin: 0;
+}
+
+#sqlContent,
+.contentTable,
+.contentTable thead,
+.contentTable tbody,
+.contentTable tr {
+    display: block;
+}
+
+.contentTable,
+.contentTable thead,
+.contentTable tbody {
+    width: max-content;
+}
+
+.contentTable tr {
+    min-width: fit-content;
+    width: fit-content;
+}
+
+.contentTable {
+    overflow: hidden;
+    contain: content;
+}
+
+.contentTable tbody {
+    overflow: auto;
+}
+
+.contentTable th,
+.contentTable td {
+    min-width: 16em;
+    width: 16em;
+    max-width: 16em;
+}
+
+.contentTable>tbody {
+    height: fit-content;
+    max-height: 50vh;
+}
+
+#contentContainer {
+    width: 100vw;
+    max-width: 100vw;
+    contain: content;
+} */
+
+
+
+/*/
+
+#sqlContent,
+#contentButtons,
+#contentButtons * {
+    width: 100%;
+}
+
+#contentButtons {
+    justify-content: space-between;
+}
+
+#contentButtons * {
+    padding: 1em;
+    margin: 0;
+}
+
+#sqlContent,
+.contentTable,
+.contentTable thead,
+.contentTable tbody,
+.contentTable tr {
+    display: block;
+}
+
+#contentContainer, 
+.contentTable,
+.contentTable thead,
+.contentTable tbody {
+    width: 100%;
+    max-width: fit-content;
+}
+
+.contentTable tr {
+    min-width: fit-content;
+    width: fit-content;
+}
+
+.contentTable {
+    overflow: hidden;
+    contain: content;
+}
+
+.contentTable tbody {
+    overflow: auto;
+}
+
+.contentTable th,
+.contentTable td {
+    min-width: 16em;
+    width: 16em;
+    max-width: 16em;
+}
+
+.contentTable>tbody {
+    height: fit-content;
+    max-height: 50vh;
+}
+
+/* */
+
+/* .contentTable thead {
+    position: absolute;
+    top: 0;
+    right: 0;
+} */
+
+/* debug */
+
+/* .contentTable th {
+    background-color: green;
+} */

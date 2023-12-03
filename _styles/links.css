@@ -1,0 +1,74 @@
+@import "colours.css";
+
+:root {
+    --a-bg: transparent;
+    --a-text: inherit;
+    --a-bg-hover: rgba(255, 255, 255, .5);
+    --a-text-hover: white;
+    --a-bg-active: rgba(255, 255, 255, .75);
+    --a-text-active: rgba(0, 0, 0, .75);
+    --ok-bg: transparent;
+    --ok-text: inherit;
+    --ok-bg-hover: rgba(255, 255, 255, .5);
+    --ok-text-hover: white;
+    --ok-bg-active: rgba(255, 255, 255, .75);
+    --ok-text-active: rgba(0, 0, 0, .75);
+    --disabled-bg: rgba(200, 200, 230, 1);
+    --disabled-text: rgba(170, 170, 170, 1);
+}
+
+a {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+a:link,
+a:visited {
+    text-decoration: none;
+    background-color: var(--a-bg);
+    color: var(--a-text);
+}
+
+/* a:focus {
+    background-color: var(--a-bg-focus);
+    color: var(--a-text-focus);
+} */
+
+a:hover {
+    background-color: var(--a-bg-hover);
+    color: var(--a-text-hover);
+}
+
+a:active {
+    background-color: var(--a-bg-active);
+    color: var(--a-text-active);
+}
+
+input#ok:link,
+input#ok:visited {
+    text-decoration: none;
+    background-color: var(--ok-bg);
+    color: var(--ok-text);
+}
+
+input#ok:hover {
+    background-color: var(--ok-bg-hover);
+    color: var(--ok-text-hover);
+}
+
+input#ok:active {
+    background-color: var(--ok-bg-active);
+    color: var(--ok-text-active);
+}
+
+.a_disabled, 
+.a_disabled:link, 
+.a_disabled:visited, 
+.a_disabled:hover, 
+.a_disabled:focus, 
+.a_disabled:active {
+    background-color: var(--disabled-bg);
+    color: var(--disabled-text);
+}

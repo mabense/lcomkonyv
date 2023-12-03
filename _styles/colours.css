@@ -1,0 +1,38 @@
+:root {
+
+    --bg: Lavender; /* lightyellow; OldLace; ; ; ; */
+    --text: black;
+    --bg-accent: gold;
+    --text-accent: black;
+    --bg-overlay: darkgreen;
+    --text-overlay: var(--bg); /* yellowgreen; */
+    --bg-error: red;
+    --text-error:  var(--bg); /* white; */
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+#contentButtons, 
+#ok-bg,
+#toolbar {
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
+}
+
+#feedback > .feedbackMsg {
+    background-color: var(--bg-overlay);
+    color: var(--text-overlay);
+}
+
+#feedback > .errorMsg {
+    background-color: var(--bg-error);
+    color: var(--text-error);
+}
+
+label select option {
+    background-color: var(--bg);
+    color: var(--text);
+}

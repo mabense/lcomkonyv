@@ -1,0 +1,91 @@
+input#ok,
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bolder;
+    font-variant: small-caps;
+    letter-spacing: .2em;
+    text-rendering: optimizeLegibility;
+}
+
+form {
+    width: 100%;
+    align-items: center;
+}
+
+label {
+    width: 100%;
+    text-align: left;
+}
+
+label select,
+label input {
+    width: 100%;
+    height: 2em;
+}
+
+input[type=submit] {
+    width: 60%;
+    height: 3em;
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
+}
+
+#contentButtons,
+#ok-bg {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#contentButtons :not(.a_button) {
+    width: 96%;
+    margin: 2%;
+}
+
+#contentButtons,
+.a_button,
+#ok-bg,
+#ok {
+    width: fit-content;
+    height: fit-content;
+}
+
+.a_button,
+#ok {
+    padding: 1em;
+    font-size: 1em;
+}
+
+#mainForm {
+    /* contain: content; */
+    height: fit-content;
+    max-height: 100%;
+    overflow: visible;
+}
+
+#writerRows {
+    width: 100%;
+}
+
+#writerRows select {
+    margin: 0 2em 0;
+}
+
+#writerRows {
+    contain: content;
+    height: 50%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+label textarea {
+    width: 100%;
+    height: 12em;
+    box-sizing: border-box;
+    padding: .75em;
+    resize: vertical;
+    text-align: justify;
+    text-align-last: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
