@@ -39,7 +39,24 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     // pushFeedbackToLog($numOfAuthors, true);
     for ($i = 1; $i <= $numOfAuthors; $i++) {
         domAppendTemplateTo("writerRows", TEMPLATE_DIR . "sql_select_author.htm");
-        $dom->getElementById("%id%")->setAttribute("id", "writer" . $i);
+        // $dom->getElementById("%id%")->setAttribute("id", "writer" . $i);
+        $substr = "%%";
+        domSetStrings(
+            new TargetedString("wSelect" . $substr, $i, StringTarget::ID, $substr), 
+            new TargetedString("wNew" . $substr, $i, StringTarget::ID, $substr), 
+            new TargetedString("forNew" . $substr, $i, StringTarget::ID, $substr)
+        );
+        domSetStrings(
+            new TargetedString("forNew" . $i, FormString::BOOK_AUTHOR_NEW, StringTarget::TEXT_CONTENT),
+            new TargetedString("forSur" . $i, FormString::WRITER_SURNAME, StringTarget::TEXT_CONTENT),
+            new TargetedString("forGiv" . $i, FormString::WRITER_GIVENNAME, StringTarget::TEXT_CONTENT),
+            new TargetedString("forClar" . $i, FormString::WRITER_CLERIFICATION, StringTarget::TEXT_CONTENT)
+        );
+        domSetStrings(
+            new TargetedString("wSelect" . $i, $i, StringTarget::NAME, $substr), 
+            new TargetedString("wNew" . $i, $i, StringTarget::NAME, $substr), 
+            new TargetedString("forNew" . $i, $i, StringTarget::FOR, $substr)
+        );
     }
 
     $tAuthor = WRITER_TABLE;
@@ -60,7 +77,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     // Fill Writer Select
     // $dom = new DOMDocument();
     $i = 1;
-    while ($writerSelect = $dom->getElementById("writer" . $i)) {
+    while ($writerSelect = $dom->getElementById("wSelect" . $i)) {
         $stmt = sqlPrepareExecute(
             $sql,
             __FUNCTION__
