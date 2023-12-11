@@ -22,6 +22,7 @@ handleLocationJump();
 
 handleAction();
 
+$_SESSION["prevPage"] = PAGE;
 
 if (newDOMDocument(BASE_TEMPLATE)) {
 

@@ -31,7 +31,6 @@ function findPage($nextPage)
 
 function redirectTo($root, $pageRoute)
 {
-    movePop();
     header("Location: " . $root . findPage($pageRoute));
     exit;
 }

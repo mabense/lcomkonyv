@@ -17,6 +17,21 @@ label {
     text-align: left;
 }
 
+.fullWidth
+{
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.fullWidth span,
+.fullWidth input {
+    width: fit-content;
+}
+
+label span,
 label select,
 label input {
     width: 100%;

@@ -97,6 +97,8 @@ final class FormString
 
 
 $pageName = [
+    "move_select" => "helyek és könyvek kijelölése", 
+
     "search" => "keresés",
     "locations" => "helyek",
     "authors" => "szerzők",

@@ -27,9 +27,15 @@ handleAction();
 handleTableRow();
 
 $page = PAGE;
+$_SESSION["prevPage"] = PAGE;
 $location = getLocation();
 
+movePop();
 $moveStt = getMoveState();
+if ($moveStt == MoveState::SELECTING) {
+    setMoveState(MoveState::NOT_SELECTED);
+    $moveStt = getMoveState();
+}
 $moveLoc = getMoveLocs();
 $moveBoo = getMoveBooks();
 
@@ -145,11 +151,12 @@ if (newDOMDocument(BASE_TEMPLATE)) {
             $sqlParams,
             [
                 "authors" => TableString::BOOK_AUTHOR,
-                "title" => TableString::BOOK_TITLE, 
-                "series" => TableString::BOOK_SERIES, 
+                "title" => TableString::BOOK_TITLE,
+                "series" => TableString::BOOK_SERIES,
                 "number" => "#"
             ],
-            /* */ "book", /*/"", /* */
+            /* */
+            "book", /*/"", /* */
             [
                 "id"
             ],
