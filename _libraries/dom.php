@@ -5,18 +5,25 @@ require_once(LIB_DIR . "public_func.php");
 
 final class StringTarget
 {
-    const TEXT_CONTENT = 0;
-    const VALUE = 1;
+    const TEXT_CONTENT = "txt";
+    const NAME_SUBSTR = "%%";
+    const FOR_SUBSTR = "for%%";
+    // default: setAttribute
+    const VALUE = "value";
+    const ID = "id";
+    const NAME = "name";
+    const FOR = "for";
 }
 
 final class TargetedString
 {
-    var $targetId, $string, $targetType;
-    public function __construct($elementID, $string, $StringTarget = StringTarget::TEXT_CONTENT)
+    var $targetId, $string, $targetType, $substr;
+    public function __construct($elementID, $string, $StringTarget = StringTarget::TEXT_CONTENT, $substr = null)
     {
         $this->targetId = $elementID;
         $this->string = $string;
         $this->targetType = $StringTarget;
+        $this->substr = $substr;
     }
 }
 
@@ -48,23 +55,52 @@ function domSetStrings(TargetedString ...$TargetedStrings)
         domSetString(
             $targ->targetId,
             $targ->string,
-            $targ->targetType
+            $targ->targetType,
+            $targ->substr
         );
     }
 }
 
 
-function domSetString($domElementId, $string, $StringTarget = StringTarget::TEXT_CONTENT)
+function domSetString($domElementId, $string, $StringTarget = StringTarget::TEXT_CONTENT, $substring = null)
 {
     $dom = new DOMDocument();
     global $dom;
     if ($domElement = $dom->getElementById($domElementId)) {
         switch ($StringTarget) {
             case StringTarget::TEXT_CONTENT:
+                if (isset($substring)) {
+                    $string = str_replace(
+                        $substring,
+                        $string,
+                        $domElement->textContent
+                    );
+                }
                 $domElement->textContent = $string;
                 break;
-            case StringTarget::VALUE:
-                $domElement->setAttribute("value", $string);
+                // case StringTarget::NAME_SUBSTR:
+                //     $new = str_replace(
+                //         StringTarget::NAME_SUBSTR,
+                //         $string,
+                //         $domElement->getAttribute("name")
+                //     );
+                //     $domElement->setAttribute("name", $new);
+                //     break;
+                // case StringTarget::FOR_SUBSTR:
+                //     $domElement->setAttribute("for", $new);
+                //     break;
+                // case StringTarget::VALUE:
+                //     $domElement->setAttribute("value", $string);
+                //     break;
+            default:
+                $new = ($substring == null)
+                    ? $string
+                    : str_replace(
+                        $substring,
+                        $string,
+                        $domElement->getAttribute($StringTarget)
+                    );
+                $domElement->setAttribute($StringTarget, $new);
                 break;
         }
     }
@@ -126,11 +162,12 @@ function domMakeToolbarLoggedIn()
 }
 
 
-function domDeleteElementById($id) {
+function domDeleteElementById($id)
+{
     $dom = new DOMDocument();
     global $dom;
     $elem = $dom->getElementById($id);
-    if(isset($elem)) {
+    if (isset($elem)) {
         $elem->parentNode->removeChild($elem);
     }
 }

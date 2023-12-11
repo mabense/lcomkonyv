@@ -83,6 +83,7 @@ final class FormString
     const WRITER_CLERIFICATION = "Egyértelműsítő név";
     const PLACE_NAME = "Hely neve";
     const BOOK_AUTHOR = TableString::BOOK_AUTHOR . "k";
+    const BOOK_AUTHOR_NEW = "Inkább új:";
     const BOOK_TITLE = TableString::BOOK_TITLE;
     const BOOK_SERIES = TableString::BOOK_SERIES;
     const CREATE_SUBMIT = "Létrehozás";
