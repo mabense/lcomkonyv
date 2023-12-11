@@ -12,4 +12,10 @@ lessAuthors();
 
 handleMissingPage();
 
-redirectTo(ROOT,  "new_book");
+$book = getBook();
+
+if (isset($book)) {
+    redirectTo(ROOT, "edit_book");
+} else {
+    redirectTo(ROOT,  "new_book");
+}

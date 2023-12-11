@@ -64,7 +64,7 @@ function domSetStrings(TargetedString ...$TargetedStrings)
 
 function domSetString($domElementId, $string, $StringTarget = StringTarget::TEXT_CONTENT, $substring = null)
 {
-    $dom = new DOMDocument();
+    // $dom = new DOMDocument();
     global $dom;
     if ($domElement = $dom->getElementById($domElementId)) {
         switch ($StringTarget) {

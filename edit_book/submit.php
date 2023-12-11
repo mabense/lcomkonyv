@@ -10,6 +10,7 @@ $user = fromGET("user");
 if (!isset($user)) {
     $user = DEV_USER;
 }
+$book = getBook();
 $loc = getLocation();
 $author = fromPOST("writer");
 $title = fromPOST("title");
@@ -20,71 +21,162 @@ if (!isset($loc)) {
     pushFeedbackToLog(ErrorString::NO_LOCATION, true);
     // } else if (!isset($author) or $author === "") {
     //     pushFeedbackToLog(ErrorString::NEW_BOOK_NO_AUTHOR, true);
-} else if (!isset($title) or $title === "") {
-    pushFeedbackToLog(ErrorString::NEW_BOOK_NO_TITLE, true);
 } else {
     $tBook = BOOK_TABLE;
     $tAuthor = BOOK_AUTHOR_TABLE;
-    $fields = "`title`, `location`";
-    $sqlVals = "?, ?";
-    $sqlTypes = "si";
-    $sqlParams = [
-        $title,
-        $loc
-    ];
 
-    if (isset($series) && $series != "") {
-        $fields .= ", `series`";
-        $sqlVals .= ", ?";
-        $sqlTypes .= "s";
-        array_push($sqlParams, $series);
+    $bookConditions = "`id`=?";
+    $authorConditions = "`book`=?";
+    $inputsSet = false;
 
-        if (isset($number) && $number != "") {
-            $fields .= ", `number_in_series`";
-            $sqlVals .= ", ?";
-            $sqlTypes .= "i";
-            array_push($sqlParams, $number);
-        }
-    }
+    $changeArr = [];
+    $sqlTypes = "";
+    $sqlParams = [];
 
-    sqlConnect();
-    $success = sqlPrepareBindExecute(
-        "INSERT INTO $tBook ($fields) VALUES ($sqlVals)",
-        $sqlTypes,
-        $sqlParams,
-        __FUNCTION__
-    );
+    if (isset($book) && $book != "") {
+        $sqlTypes = "i";
+        $sqlParams = [
+            $book
+        ];
 
-    // $success = (new mysqli())->prepare("");
-
-    // if ($bResult = $success->get_result()) {
-    //     if ($book = $bResult->fetch_assoc()) {
-    if ($book = $success->insert_id) {
-        if (is_array($author) && (sizeof($author) > 0)) {
-            $fields = "`book`, `author`";
-            foreach ($author as $key => $authorId) {
-                if(!is_nan($authorId) && $authorId > 0) {
-                    $authorAdded = sqlPrepareBindExecute(
-                        "INSERT INTO $tAuthor ($fields) VALUES (?, ?)",
-                        "ii",
-                        [
-                            $book,
-                            $authorId
-                        ],
-                        __FUNCTION__
-                    );
-                }
+        $stmt = sqlPrepareBindExecute(
+            "SELECT `title`, `location` FROM $tBook WHERE $bookConditions",
+            $sqlTypes,
+            $sqlParams,
+            __FUNCTION__
+        );
+        if ($result = $stmt->get_result()) {
+            if ($row = $result->fetch_assoc()) {
+                $page = $row["title"];
+                $location = $row["location"];
             }
         }
     }
+
+    $changeArr = [];
+    $sqlTypes = "";
+    $sqlParams = [];
+
+    if (isset($title)) {
+        array_push($changeArr, "`title`=?");
+        $sqlTypes .= "s";
+        array_push($sqlParams, $title);
+        if ($title != "") {
+            $inputsSet = true;
+        }
+    }
+    if (isset($series)) {
+        array_push($changeArr, "`series`=?");
+        $sqlTypes .= "s";
+        array_push($sqlParams, $series);
+        if ($series != "") {
+            $inputsSet = true;
+        }
+    }
+    if (isset($number)) {
+        if((int) $number == 0) {
+            array_push($changeArr, "`number_in_series`=NULL");
+        }
+        else{
+            array_push($changeArr, "`number_in_series`=?");
+            $sqlTypes .= "i";
+            array_push($sqlParams, (int) $number);
+            if ($number > 0) {
+                $inputsSet = true;
+            }
+        }
+    }
+
+    if (is_array($author)) {
+        foreach ($author as $key => $authorId) {
+            if (!is_nan((float) $authorId) && $authorId > 0) {
+                $inputsSet = true;
+            }
+        }
+    }
+
+    $changes = implode(", ", $changeArr);
+    $sqlTypes .= "i";
+    array_push($sqlParams, $book);
+
+    sqlConnect();
+
+    if ($inputsSet) {
+        $success = sqlPrepareBindExecute(
+            "UPDATE $tBook SET $changes WHERE $bookConditions",
+            $sqlTypes,
+            $sqlParams,
+            __FUNCTION__
+        );
+
+        $changeArr = [];
+        $sqlTypes = "";
+        $sqlParams = [];
+
+        $sqlTypes = "i";
+        array_push($sqlParams, $book);
+
+        $deleteFail = false;
+        $authorErrors = false;
+        if ($success) {
+            $deletion = sqlPrepareBindExecute(
+                "DELETE FROM $tAuthor WHERE $authorConditions",
+                $sqlTypes,
+                $sqlParams,
+                __FUNCTION__
+            );
+            if (!$deletion) {
+                $deleteFail = true;
+            }
+            if (is_array($author) && (sizeof($author) > 0)) {
+                $fields = "`book`, `author`";
+                foreach ($author as $key => $authorId) {
+                    if (!is_nan((float) $authorId) && $authorId > 0) {
+                        $authorAdded = sqlPrepareBindExecute(
+                            "INSERT INTO $tAuthor ($fields) VALUES (?, ?)",
+                            "ii",
+                            [
+                                $book,
+                                $authorId
+                            ],
+                            __FUNCTION__
+                        );
+                        if (!$authorAdded) {
+                            $authorErrors = true;
+                        }
+                    }
+                }
+            }
+            if ($deleteFail || $authorErrors) {
+                $success = false;
+            }
+        }
+        $page = "book";
+    } else {
+        $sqlTypes = "i";
+        $sqlParams = [
+            $book
+        ];
+
+        $deletion = sqlPrepareBindExecute(
+            "DELETE FROM $tBook WHERE $bookConditions",
+            $sqlTypes,
+            $sqlParams,
+            __FUNCTION__
+        );
+        if ($deletion) {
+            $success = true;
+        }
+        $page = "locations";
+    }
+
     sqlDisconnect();
 }
 
 if ($success != false) {
     setUser($user);
-    pushFeedbackToLog(FeedbackString::CREATE_SUCCESS);
-    $page = "locations";
+    pushFeedbackToLog(FeedbackString::EDIT_SUCCESS);
 } elseif (!isThereFeedback()) {
-    pushFeedbackToLog(ErrorString::CREATE_FAIL, true);
+    pushFeedbackToLog(ErrorString::EDIT_FAIL, true);
 }
 redirectTo(ROOT, $page);

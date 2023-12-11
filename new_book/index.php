@@ -22,6 +22,8 @@ handleLocationJump();
 
 handleAction();
 
+resetBook();
+
 $numOfAuthors = getNumberOfAuthors();
 
 if (newDOMDocument(BASE_TEMPLATE)) {
@@ -106,12 +108,12 @@ if (newDOMDocument(BASE_TEMPLATE)) {
 
     $lessA = $dom->createElement("a", ButtonString::BOOK_NEW_LESS_AUTHORS);
     $lessA->setAttribute("class", "a_button");
-    $lessA->setAttribute("href", "../" . findPage("new_book_by_less"));
+    $lessA->setAttribute("href", "../" . findPage("book_author_less"));
     $buttons->appendChild($lessA);
 
     $moreA = $dom->createElement("a", ButtonString::BOOK_NEW_MORE_AUTHORS);
     $moreA->setAttribute("class", "a_button");
-    $moreA->setAttribute("href", "../" . findPage("new_book_by_more"));
+    $moreA->setAttribute("href", "../" . findPage("book_author_more"));
     $buttons->appendChild($moreA);
 
     domSetStrings(

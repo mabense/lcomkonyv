@@ -134,6 +134,13 @@ function getNumberOfAuthors()
     return $_SESSION["noa"];
 }
 
+function setNumberOfAuthors($number)
+{
+    haveSession();
+    $_SESSION["noa"] = ($number >= 1) ? $number : 1;
+    return $_SESSION["noa"];
+}
+
 function lessAuthors()
 {
     haveSession();

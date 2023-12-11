@@ -27,6 +27,7 @@ final class ErrorString
     const NEW_BOOK_NO_TITLE = "A könyvcím nincs megadva!";
     const NEW_LOCATION_NO_NAME = "A helynév nincs megadva!";
     const NO_LOCATION = "Hely nem található. Lehetséges, hogy szerverhiba történt.";
+    const EDIT_FAIL = "A változtatás kudarcot vallott.";
 }
 
 final class FeedbackString
@@ -34,6 +35,7 @@ final class FeedbackString
     const LOGIN_ACCEPTED = "Sikeres belépés.";
     const LOGOUT_SUCCESS = "Sikeres kilépés.";
     const CREATE_SUCCESS = "Sikeres létrehozás.";
+    const EDIT_SUCCESS = "Változtatás elmentve.";
     const PLACE_EMPTY = "Ez a hely üres.";
 }
 
@@ -49,6 +51,7 @@ final class ButtonString
     const BOOK_NEW_LESS_AUTHORS = "Kevesebb szerző";
     const BOOK_NEW_MORE_AUTHORS = "Több szerző";
     const BOOK_JUMP = "Ugrás a könyv helyére";
+    const BOOK_EDIT = "Adatmódosítás";
 }
 
 final class DisplayString

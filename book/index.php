@@ -24,6 +24,8 @@ handleAction();
 
 handleTableRow();
 
+resetNumberOfAuthors();
+
 $page = PAGE;
 $book = getBook();
 $location = getLocation();
@@ -117,10 +119,10 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     $jump->setAttribute("href", "../" . findPage("locations") . "/?jump=$location");
     $buttons->appendChild($jump);
 
-    $new = $dom->createElement("a", ButtonString::AUTHOR_NEW);
-    $new->setAttribute("class", "a_button");
-    $new->setAttribute("href", "../" . findPage("new_author"));
-    $buttons->appendChild($new);
+    $edit = $dom->createElement("a", ButtonString::BOOK_EDIT);
+    $edit->setAttribute("class", "a_button");
+    $edit->setAttribute("href", "../" . findPage("edit_book"));
+    $buttons->appendChild($edit);
 
     domSetTitle(pageToDisplayText($page));
 
