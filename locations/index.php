@@ -29,6 +29,10 @@ handleTableRow();
 $page = PAGE;
 $location = getLocation();
 
+$moveStt = getMoveState();
+$moveLoc = getMoveLocs();
+$moveBoo = getMoveBooks();
+
 if (newDOMDocument(BASE_TEMPLATE)) {
 
     domAddStyle("../_styles/query_page.css");
@@ -90,7 +94,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         domSetString("placeListHead", TableString::PLACES, StringTarget::TEXT_CONTENT);
 
         $fields = "`id`, `name`";
-        sqlTableParams(
+        $stmt = sqlTableParams(
             "SELECT $fields FROM $tLocation WHERE $placeConditions
             ORDER BY `name` DESC",
             $sqlTypes,
@@ -189,6 +193,12 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     $newBook->setAttribute("class", "a_button");
     $newBook->setAttribute("href", "../" . findPage("new_book"));
     $buttons->appendChild($newBook);
+
+    $sele = $dom->createElement("a", ButtonString::MOVE_SELECT);
+    $sele->setAttribute("class", "a_button");
+    $sele->setAttribute("href", "../" . findPage("move_select"));
+    $buttons->appendChild($sele);
+
 
     domSetTitle(
         pageToDisplayText($page),

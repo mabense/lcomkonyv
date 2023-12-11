@@ -178,3 +178,107 @@ function resetBook()
     unset($_SESSION["book"]);
     return !isset($_SESSION["book"]);
 }
+
+final class MoveState
+{
+    const NOT_SELECTED = 0;
+    const SELECTED = 1;
+}
+
+function getMoveState()
+{
+    $state = fromSESSION("moveState");
+    if (is_null($state)) {
+        $state = MoveState::NOT_SELECTED;
+    }
+    return $state;
+}
+
+function setMoveState($MoveState)
+{
+    $_SESSION["moveState"] = $MoveState;
+}
+
+function getMoveLocs()
+{
+    $arr = fromSESSION("moveLocs");
+    if (is_null($arr)) {
+        $_SESSION["moveLocs"] = [];
+    }
+    return $arr;
+}
+
+function setMoveLocs($MoveLocs)
+{
+    $_SESSION["moveLocs"] = $MoveLocs;
+}
+
+function resetMoveLocs()
+{
+    $_SESSION["moveLocs"] = [];
+}
+
+function getMoveBooks()
+{
+    $arr = fromSESSION("moveBooks");
+    if (is_null($arr)) {
+        $_SESSION["moveBooks"] = [];
+    }
+    return $arr;
+}
+
+function setMoveBooks($MoveBooks)
+{
+    $_SESSION["moveBooks"] = $MoveBooks;
+}
+
+function resetMoveBooks()
+{
+    $_SESSION["moveBooks"] = [];
+}
+
+function movePushLocation($loc)
+{
+    haveSession();
+    switch (getMoveState()) {
+        case MoveState::NOT_SELECTED:
+            if (is_array(getMoveLocs())) {
+                array_push($_SESSION["moveLocs"], $loc);
+            }
+            break;
+        case MoveState::SELECTED:
+            break;
+    }
+}
+
+function movePushBook($boo)
+{
+    haveSession();
+    switch (getMoveState()) {
+        case MoveState::NOT_SELECTED:
+            if (is_array(getMoveBooks())) {
+                array_push($_SESSION["moveBooks"], $boo);
+            }
+            break;
+        case MoveState::SELECTED:
+            break;
+    }
+}
+
+function movePop() // ???
+{
+    haveSession();
+    switch (getMoveState()) {
+        case MoveState::NOT_SELECTED:
+            $pop = [
+                "moveLocs" => getMoveLocs(), 
+                "moveBooks" => getMoveBooks()
+            ];
+            resetMoveLocs();
+            resetMoveBooks();
+            break;
+        case MoveState::SELECTED:
+            break;
+    }
+    return $pop;
+}
