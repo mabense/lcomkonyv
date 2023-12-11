@@ -52,6 +52,7 @@ function resetUser()
 {
     resetLocation();
     resetNumberOfAuthors();
+    resetBook();
     unset($_SESSION["uName"]);
     return !isset($_SESSION["uName"]);
 }
@@ -152,4 +153,21 @@ function resetNumberOfAuthors()
     haveSession();
     unset($_SESSION["noa"]);
     return !isset($_SESSION["noa"]);
+}
+
+function getBook()
+{
+    return fromSESSION("book");
+}
+
+function setBook($book)
+{
+    $_SESSION["book"] = $book;
+}
+
+function resetBook()
+{
+    haveSession();
+    unset($_SESSION["book"]);
+    return !isset($_SESSION["book"]);
 }

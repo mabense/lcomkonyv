@@ -110,11 +110,8 @@ function handleTableRow()
             case 'locations':
                 pushLocation($keys["id"]);
                 break;
-            case 'milestone':
-                // setMilestone($keys["number"]);
-                break;
-            case 'document':
-                // setDocument($keys["requirement"]);
+            case 'book':
+                setBook($keys["id"]);
                 break;
             default:
                 break;

@@ -48,6 +48,7 @@ final class ButtonString
     const BOOK_NEW = "Új könyv ide";
     const BOOK_NEW_LESS_AUTHORS = "Kevesebb szerző";
     const BOOK_NEW_MORE_AUTHORS = "Több szerző";
+    const BOOK_JUMP = "Ugrás a könyv helyére";
 }
 
 final class DisplayString
