@@ -15,8 +15,9 @@ $given = fromPOST("given");
 $clar = fromPOST("clar");
 
 if (
-    !isset($sur) or $sur === "" or
-    !isset($given) or $given === ""
+    (!isset($sur) or $sur === "") and
+    (!isset($given) or $given === "") and
+    (!isset($clar) or $clar === "")
 ) {
     pushFeedbackToLog(ErrorString::NEW_AUTHOR_NO_NAME, true);
 } else {
