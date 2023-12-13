@@ -17,6 +17,7 @@ final class ErrorString
     const HANDLE_ACTION_FAILED = "\"%action%\" sikertelen.";
     const HANDLE_ACTION_NOT_FOUND = "\"%action%\" nem található.";
     const LOCATION_NO_EXIT = "Nem sikerült kijjebb lépni a helyről.";
+    const LOCATION_DELETE_FAILED = "Nem sikerült törölni a helyet.";
     const CREATE_FAIL = "Nem sikerült létrehozni.";
     const NEW_AUTHOR_CLARIFY = "Már van ilyen nevű író! Esetleg egyértelműsíteni kell.";
     const NEW_AUTHOR_RECLARIFY = "Már van ilyen nevű író! Esetleg más egyértelműsítés kell.";
@@ -47,12 +48,15 @@ final class ButtonString
     const LOCATION_EXIT = "Kijjebb lépés";
     const LOCATION_EDIT = "Hely" . SubString::RENAMING;
     const LOCATION_NEW = "Új hely ide";
+    const LOCATION_DELETE = "Hely törlése, tartalom kijjebb léptetése";
     const BOOK_NEW = "Új könyv ide";
     const BOOK_NEW_LESS_AUTHORS = "Kevesebb szerző";
     const BOOK_NEW_MORE_AUTHORS = "Több szerző";
     const BOOK_JUMP = "Ugrás a könyv helyére";
     const BOOK_EDIT = "Adatmódosítás";
     const MOVE_SELECT = "Áthelyezés innen";
+    const MOVE_PASTE = "Áthelyezés ide";
+    const MOVE_CANCEL = "Mégsincs áthelyezés";
 }
 
 final class DisplayString

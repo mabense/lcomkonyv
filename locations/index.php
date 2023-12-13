@@ -24,15 +24,10 @@ handleAction();
 
 handleTableRow();
 
-$page = PAGE;
-$_SESSION["prevPage"] = PAGE;
-$location = getLocation();
+canMoveFromHere();
 
-$moveStt = getMoveState();
-if ($moveStt == MoveState::SELECTING) {
-    setMoveState(MoveState::NOT_SELECTED);
-    $moveStt = getMoveState();
-}
+$page = PAGE;
+$location = getLocation();
 
 if (newDOMDocument(BASE_TEMPLATE)) {
 
@@ -181,6 +176,11 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         $editLoc->setAttribute("class", "a_button");
         $editLoc->setAttribute("href", "../" . findPage("edit_location"));
         $buttons->appendChild($editLoc);
+
+        $delLoc = $dom->createElement("a", ButtonString::LOCATION_DELETE);
+        $delLoc->setAttribute("class", "a_button");
+        $delLoc->setAttribute("href", "../" . findPage("delete_location"));
+        $buttons->appendChild($delLoc);
     } else {
         $exitLoc = $dom->createElement("a", ButtonString::LOCATION_NO_EXIT);
         $exitLoc->setAttribute("class", "a_button a_disabled");
@@ -196,10 +196,22 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     $newBook->setAttribute("href", "../" . findPage("new_book"));
     $buttons->appendChild($newBook);
 
-    $sele = $dom->createElement("a", ButtonString::MOVE_SELECT);
-    $sele->setAttribute("class", "a_button");
-    $sele->setAttribute("href", "../" . findPage("move_select"));
-    $buttons->appendChild($sele);
+    if(getMoveState() == MoveState::SELECTED) {
+        $paste = $dom->createElement("a", ButtonString::MOVE_PASTE);
+        $paste->setAttribute("class", "a_button");
+        $paste->setAttribute("href", "../" . findPage("move_paste"));
+        $buttons->appendChild($paste);
+        
+        $unmove = $dom->createElement("a", ButtonString::MOVE_CANCEL);
+        $unmove->setAttribute("class", "a_button");
+        $unmove->setAttribute("href", "../" . findPage("move_cancel"));
+        $buttons->appendChild($unmove);
+    } else {
+        $sele = $dom->createElement("a", ButtonString::MOVE_SELECT);
+        $sele->setAttribute("class", "a_button");
+        $sele->setAttribute("href", "../" . findPage("move_select"));
+        $buttons->appendChild($sele);
+    }
 
 
     domSetTitle(

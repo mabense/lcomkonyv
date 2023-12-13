@@ -23,6 +23,7 @@ handleLocationJump();
 handleAction();
 
 handleTableRow();
+resetTableAllKeys();
 
 $page = PAGE;
 $book = getBook();

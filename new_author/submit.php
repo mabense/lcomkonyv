@@ -68,4 +68,4 @@ if ($success != false) {
 } elseif (!isThereFeedback()) {
     pushFeedbackToLog(ErrorString::CREATE_FAIL, true);
 }
-redirectTo(ROOT, $page);
+redirectToPreviousPage();

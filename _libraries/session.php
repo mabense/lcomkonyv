@@ -74,6 +74,9 @@ function resetUser()
 
 function getTableAllKeys($tableName)
 {
+    if (fromSESSION($tableName . "AllKeys") == null) {
+        setTableAllKeys($tableName, []);
+    }
     return fromSESSION($tableName . "AllKeys");
 }
 
@@ -86,9 +89,13 @@ function setTableAllKeys($tableName, $keys)
 
 function resetTableAllKeys($tableName = null)
 {
-    setTableAllKeys($tableName, false);
-    unset($_SESSION[$tableName . "AllKeys"]);
-    return !isset($_SESSION[$tableName . "AllKeys"]);
+    if($tableName == null) {
+        resetTableAllKeys("placeList");
+        resetTableAllKeys("bookList");
+    }else {
+        setTableAllKeys($tableName, []);
+        unset($_SESSION[$tableName . "AllKeys"]);
+    }
 }
 
 
@@ -205,6 +212,7 @@ function resetBook()
 
 function getMoveState()
 {
+    haveSession();
     if (is_null(fromSESSION("moveState"))) {
         $_SESSION["moveState"] = MoveState::NOT_SELECTED;
     }
@@ -221,10 +229,10 @@ function setMoveState($MoveState)
 function resetMoveState()
 {
     haveSession();
-    $_SESSION["moveState"] = MoveState::NOT_SELECTED;
     resetMoveSqls();
     resetMoveLocs();
     resetMoveBooks();
+    setMoveState(MoveState::NOT_SELECTED);
     return $_SESSION["moveState"] == MoveState::NOT_SELECTED;
 }
 
@@ -311,33 +319,33 @@ function moveBooksPush($boo)
 
 function moveLocsGetAll()
 {
-    $arr = fromSESSION("moveLocs");
-    if (is_null($arr)) {
+    if (is_null(fromSESSION("moveLocs"))) {
         $_SESSION["moveLocs"] = [];
     }
-    return $arr;
+    return fromSESSION("moveLocs");
 }
 
 
 function moveBooksGetAll()
 {
-    $arr = fromSESSION("moveBooks");
-    if (is_null($arr)) {
+    if (is_null(fromSESSION("moveBooks"))) {
         $_SESSION["moveBooks"] = [];
     }
-    return $arr;
+    return fromSESSION("moveBooks");
 }
 
 
 function resetMoveLocs()
 {
     $_SESSION["moveLocs"] = [];
+    unset($_SESSION["moveLocs"]);
 }
 
 
 function resetMoveBooks()
 {
     $_SESSION["moveBooks"] = [];
+    unset($_SESSION["moveBooks"]);
 }
 
 

@@ -22,7 +22,9 @@ handleLocationJump();
 
 handleAction();
 
-$_SESSION["prevPage"] = PAGE;
+setMoveLocSql("");
+
+canMoveFromHere();
 
 if (newDOMDocument(BASE_TEMPLATE)) {
 
@@ -221,6 +223,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         );
     } else {
         domDeleteElementById("bookList");
+        setMoveBookSql("");
     }
 
     domDeleteElementById("bookListHead");
@@ -231,6 +234,22 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         new TargetedString("forSeries", FormString::BOOK_SERIES, StringTarget::TEXT_CONTENT),
         new TargetedString("ok", FormString::SEARCH_SUBMIT, StringTarget::VALUE)
     );
+
+    $buttons = $dom->getElementById("contentButtons");
+
+    // $dom = new DOMDocument();
+
+    if(getMoveState() == MoveState::SELECTED) {
+        $unmove = $dom->createElement("a", ButtonString::MOVE_CANCEL);
+        $unmove->setAttribute("class", "a_button");
+        $unmove->setAttribute("href", "../" . findPage("move_cancel"));
+        $buttons->appendChild($unmove);
+    } else {
+        $sele = $dom->createElement("a", ButtonString::MOVE_SELECT);
+        $sele->setAttribute("class", "a_button");
+        $sele->setAttribute("href", "../" . findPage("move_select"));
+        $buttons->appendChild($sele);
+    }
 
     domSetTitle(pageToDisplayText(PAGE));
 

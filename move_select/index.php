@@ -23,6 +23,7 @@ handleLocationJump();
 handleAction();
 
 handleTableRow();
+resetTableAllKeys();
 
 $page = PAGE;
 $location = getLocation();
@@ -138,7 +139,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
 
     $exitLoc = $dom->createElement("a", ButtonString::CANCEL);
     $exitLoc->setAttribute("class", "a_button");
-    $exitLoc->setAttribute("href", "../" . findPage(fromSESSION("prevPage")));
+    $exitLoc->setAttribute("href", "../" . findPage("cancel"));
     $buttons->appendChild($exitLoc);
 
 

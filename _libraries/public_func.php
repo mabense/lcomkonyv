@@ -5,7 +5,7 @@
 function pageToDisplayText($page)
 {
     global $pageName;
-    if(array_key_exists($page, $pageName)){
+    if (array_key_exists($page, $pageName)) {
         return toDisplayText($pageName[$page]);
     }
     return toDisplayText($page);
@@ -31,14 +31,22 @@ function findPage($nextPage)
 
 function redirectTo($root, $pageRoute)
 {
-    if(!in_array($pageRoute, ["edit_book", "new_book"])) {
+    if (!in_array($pageRoute, ["edit_book", "new_book"])) {
         resetNumberOfAuthors();
     }
-    if($pageRoute != "move_select") {
+    if (
+        getMoveState() == MoveState::SELECTING
+    ) {
         resetMoveState();
     }
     header("Location: " . $root . findPage($pageRoute));
     exit;
+}
+
+
+function redirectToPreviousPage()
+{
+    redirectTo(ROOT, popPreviousPage());
 }
 
 
@@ -98,7 +106,8 @@ function handleAction()
 }
 
 
-function handleLocationJump() {
+function handleLocationJump()
+{
     haveSession();
     $location = fromGET("jump");
     if (isset($location)) {
@@ -130,5 +139,57 @@ function handleTableRow()
         resetTableAllKeys($tableName);
 
         redirectTo(ROOT, PAGE);
+    }
+}
+
+
+function pushPreviousPage()
+{
+    haveSession();
+    if (
+        is_null(fromSESSION("prevPage")) or
+        !is_array(fromSESSION("prevPage"))
+    ) {
+        $_SESSION["prevPage"] = [];
+    }
+    array_push($_SESSION["prevPage"], PAGE);
+}
+
+
+function popPreviousPage()
+{
+    haveSession();
+    if (
+        is_null(fromSESSION("prevPage")) or
+        !is_array(fromSESSION("prevPage")) or
+        sizeof(fromSESSION("prevPage")) <= 0
+    ) {
+        $_SESSION["prevPage"] = [];
+        return PAGE;
+    }
+    return array_pop(fromSESSION("prevPage"));
+}
+
+
+function canMoveFromHere()
+{
+    resetTableAllKeys();
+    pushPreviousPage();
+
+    $GLOBALS["moveStt"] = getMoveState();
+    global $moveStt;
+
+    switch ($moveStt) {
+        case MoveState::NOT_SELECTED:
+            resetMoveSqls();
+            break;
+        case MoveState::SELECTING:
+            setMoveState(MoveState::NOT_SELECTED);
+            $moveStt = getMoveState();
+            break;
+        case MoveState::SELECTED:
+            break;
+        default:
+            break;
     }
 }

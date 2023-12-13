@@ -24,6 +24,8 @@ handleAction();
 
 resetBook();
 
+pushPreviousPage();
+
 $numOfAuthors = getNumberOfAuthors();
 
 if (newDOMDocument(BASE_TEMPLATE)) {
@@ -103,7 +105,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
 
     $exitLoc = $dom->createElement("a", ButtonString::CANCEL);
     $exitLoc->setAttribute("class", "a_button");
-    $exitLoc->setAttribute("href", "../" . findPage("locations"));
+    $exitLoc->setAttribute("href", "../" . findPage("cancel"));
     $buttons->appendChild($exitLoc);
 
     $lessA = $dom->createElement("a", ButtonString::BOOK_NEW_LESS_AUTHORS);
@@ -115,6 +117,11 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     $moreA->setAttribute("class", "a_button");
     $moreA->setAttribute("href", "../" . findPage("book_author_more"));
     $buttons->appendChild($moreA);
+
+    $new = $dom->createElement("a", ButtonString::AUTHOR_NEW);
+    $new->setAttribute("class", "a_button");
+    $new->setAttribute("href", "../" . findPage("new_author"));
+    $buttons->appendChild($new);
 
     domSetStrings(
         new TargetedString("forWriter", FormString::BOOK_AUTHOR, StringTarget::TEXT_CONTENT),

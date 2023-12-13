@@ -23,6 +23,9 @@ handleLocationJump();
 handleAction();
 
 handleTableRow();
+resetTableAllKeys();
+
+pushPreviousPage();
 
 $page = PAGE;
 $location = getLocation();
