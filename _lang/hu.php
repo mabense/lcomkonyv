@@ -74,9 +74,11 @@ final class TableString
     const PLACES = "HELYEK";
     const PLACE_ENTER = "Bejjebb lépés";
     const BOOKS = "KÖNYVEK";
-    const BOOK_AUTHOR = "Szerző";
+    const BOOK_PLACE = "Helye";
+    const BOOK_AUTHOR = "Szerzők";
     const BOOK_TITLE = "Cím";
     const BOOK_SERIES = "Sorozat";
+    const BOOK_NUMBER = "#";
 }
 
 final class FormString
@@ -91,7 +93,7 @@ final class FormString
     const WRITER_GIVENNAME = "Keresztnév";
     const WRITER_CLERIFICATION = "Egyértelműsítő név";
     const PLACE_NAME = "Hely neve";
-    const BOOK_AUTHOR = TableString::BOOK_AUTHOR . "k";
+    const BOOK_AUTHOR = TableString::BOOK_AUTHOR;
     const BOOK_AUTHOR_NEW = "Inkább új:";
     const BOOK_TITLE = TableString::BOOK_TITLE;
     const BOOK_SERIES = TableString::BOOK_SERIES;

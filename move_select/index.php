@@ -113,7 +113,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
                 "authors" => TableString::BOOK_AUTHOR,
                 "title" => TableString::BOOK_TITLE,
                 "series" => TableString::BOOK_SERIES,
-                "number" => "#"
+                "number" => TableString::BOOK_NUMBER
             ],
             "book",
             [

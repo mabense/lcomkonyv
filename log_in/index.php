@@ -24,6 +24,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     domAppendTemplateTo("content", "./view.htm");
 
     domSetStrings(
+        new TargetedString("forUser", FormString::USERNAME, StringTarget::TEXT_CONTENT), 
         new TargetedString("forPassword", FormString::PASSWORD, StringTarget::TEXT_CONTENT), 
         new TargetedString("ok", FormString::LOGIN_SUBMIT, StringTarget::VALUE)
     );

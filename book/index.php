@@ -27,7 +27,9 @@ resetTableAllKeys();
 
 $page = PAGE;
 $book = getBook();
-$location = getLocation();
+$authors = "";
+$series = "";
+$number = 0;
 
 if (newDOMDocument(BASE_TEMPLATE)) {
 
@@ -68,6 +70,12 @@ if (newDOMDocument(BASE_TEMPLATE)) {
             }
         }
 
+        if (isset($location)) {
+            sqlSetLocationPath(($location !== "") ? $location : null);
+        }
+
+        $locationFull = sqlGetLocationPathString();
+
         $full_name = "
         CONCAT(
             `$tWriter`.`surname`, ',', `$tWriter`.`givenname`, 
@@ -86,30 +94,40 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         IF(ISNULL(`series`), '', `series`) AS 'series', 
         IF(ISNULL(`number_in_series`), '', `number_in_series`) AS 'number'";
         $sql = "SELECT $fields 
-    FROM (
-        (
-            `$tBook` LEFT JOIN `$tWrote` ON `$tBook`.`id`=`$tWrote`.`book`
-        ) LEFT JOIN `$tWriter` ON `$tWriter`.`id`=`$tWrote`.`author`
-    )
-    WHERE $bookConditions GROUP BY `$tBook`.`id` ORDER BY `authors`, `series`, `number`";
-        sqlTableParams(
+        FROM (
+            (
+                `$tBook` LEFT JOIN `$tWrote` ON `$tBook`.`id`=`$tWrote`.`book`
+            ) LEFT JOIN `$tWriter` ON `$tWriter`.`id`=`$tWrote`.`author`
+        )
+        WHERE $bookConditions GROUP BY `$tBook`.`id` ORDER BY `authors`, `series`, `number`";
+        $stmt = sqlPrepareBindExecute(
             $sql,
             $sqlTypes,
             $sqlParams,
-            [
-                "authors" => TableString::BOOK_AUTHOR,
-                // "title" => TableString::BOOK_TITLE,
-                "series" => TableString::BOOK_SERIES,
-                "number" => "#"
-            ],
-            /* * / "book", /*/
-            "", /* */
-            [
-                // "id"
-            ],
-            "bookList"
+            __FUNCTION__
         );
+        if ($result = $stmt->get_result()) {
+            if ($row = $result->fetch_assoc()) {
+                $authors = $row["authors"];
+                $series = $row["series"];
+                $number = $row["number"];
+            }
+        }
     }
+
+    $sep = ": ";
+    domSetStrings(
+        new TargetedString("label-where", TableString::BOOK_PLACE . $sep), 
+        new TargetedString("book-where", $locationFull), 
+        new TargetedString("label-by", TableString::BOOK_AUTHOR . $sep), 
+        new TargetedString("book-by", $authors), 
+        // new TargetedString("label-title", TableString::BOOK_TITLE . $sep), 
+        // new TargetedString("book-title", $page), 
+        new TargetedString("label-series", TableString::BOOK_SERIES . $sep), 
+        new TargetedString("book-series", $series), 
+        // new TargetedString("label-number", TableString::BOOK_NUMBER . $sep), 
+        new TargetedString("book-number", $number)
+    );
 
     $buttons = $dom->getElementById("contentButtons");
 
