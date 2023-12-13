@@ -12,7 +12,7 @@ final class StringTarget
     const VALUE = "value";
     const ID = "id";
     const NAME = "name";
-    const FOR = "for";
+    const LABEL = "for";
 }
 
 final class TargetedString

@@ -116,7 +116,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         domSetStrings(
             new TargetedString("wSelect" . $i, $i, StringTarget::NAME, $substr),
             new TargetedString("wNew" . $i, $i, StringTarget::NAME, $substr),
-            new TargetedString("forNew" . $i, $i, StringTarget::FOR, $substr)
+            new TargetedString("forNew" . $i, $i, StringTarget::LABEL, $substr)
         );
     }
     // domSetString("authorListHead", TableString::AUTHORS, StringTarget::TEXT_CONTENT);

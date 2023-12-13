@@ -203,7 +203,7 @@ function sqlTableRow($table, $queryAssocRow, $assocColumnsHeaders, $onClickRoute
             new TargetedString($inputOldID, $inputNewID, StringTarget::ID)
         );
         domSetStrings(
-            new TargetedString($labelNewID, $inputNewID, StringTarget::FOR),
+            new TargetedString($labelNewID, $inputNewID, StringTarget::LABEL),
             new TargetedString($inputNewID, $tableID, StringTarget::NAME, $tableMark),
             new TargetedString($inputNewID, $rowIndex, StringTarget::NAME, $rowMark)
         );

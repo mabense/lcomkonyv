@@ -31,7 +31,10 @@ function findPage($nextPage)
 
 function redirectTo($root, $pageRoute)
 {
-    if (!in_array($pageRoute, ["edit_book", "new_book"])) {
+    if (
+        $pageRoute != "edit_book" &&
+        $pageRoute != "new_book"
+    ) {
         resetNumberOfAuthors();
     }
     if (
