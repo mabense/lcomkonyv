@@ -31,9 +31,16 @@ function findPage($nextPage)
 
 function redirectTo($root, $pageRoute)
 {
+    if(!in_array($pageRoute, ["edit_book", "new_book"])) {
+        resetNumberOfAuthors();
+    }
+    if($pageRoute != "move_select") {
+        resetMoveState();
+    }
     header("Location: " . $root . findPage($pageRoute));
     exit;
 }
+
 
 function fromGET($nameInGET)
 {
@@ -43,6 +50,7 @@ function fromGET($nameInGET)
     return null;
 }
 
+
 function fromPOST($nameInPOST)
 {
     if (isset($_POST[$nameInPOST])) {
@@ -50,6 +58,7 @@ function fromPOST($nameInPOST)
     }
     return null;
 }
+
 
 function handleMissingPage()
 {
@@ -63,6 +72,7 @@ function handleMissingPage()
         redirectTo(ROOT, PAGE);
     }
 }
+
 
 function handleAction()
 {

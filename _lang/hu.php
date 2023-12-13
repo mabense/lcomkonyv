@@ -52,7 +52,7 @@ final class ButtonString
     const BOOK_NEW_MORE_AUTHORS = "Több szerző";
     const BOOK_JUMP = "Ugrás a könyv helyére";
     const BOOK_EDIT = "Adatmódosítás";
-    const MOVE_SELECT = "Kijelölés, majd áthelyezés";
+    const MOVE_SELECT = "Áthelyezés innen";
 }
 
 final class DisplayString

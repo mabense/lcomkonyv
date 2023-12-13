@@ -1,6 +1,7 @@
 <?php
 // DON'T require: dom.php
 
+
 final class MoveState
 {
     const NOT_SELECTED = 0;
@@ -8,12 +9,14 @@ final class MoveState
     const SELECTED = 2;
 }
 
+
 function haveSession()
 {
     if (!session_id()) {
         session_start();
     }
 }
+
 
 function fromSESSION($nameInSESSION)
 {
@@ -45,21 +48,25 @@ function auth($acceptGuest, ...$acceptedUsers)
     return true;
 }
 
+
 function getUserName()
 {
     return fromSESSION("uName");
 }
+
 
 function setUser($userName)
 {
     $_SESSION["uName"] = $userName;
 }
 
+
 function resetUser()
 {
     resetLocation();
-    resetNumberOfAuthors();
     resetBook();
+    resetNumberOfAuthors();
+    resetMoveState();
     unset($_SESSION["uName"]);
     return !isset($_SESSION["uName"]);
 }
@@ -75,6 +82,7 @@ function setTableAllKeys($tableName, $keys)
 {
     $_SESSION[$tableName . "AllKeys"] = $keys;
 }
+
 
 function resetTableAllKeys($tableName = null)
 {
@@ -131,6 +139,7 @@ function resetLocation()
     return !isset($_SESSION["location"]);
 }
 
+
 function getNumberOfAuthors()
 {
     haveSession();
@@ -141,12 +150,14 @@ function getNumberOfAuthors()
     return $_SESSION["noa"];
 }
 
+
 function setNumberOfAuthors($number)
 {
     haveSession();
     $_SESSION["noa"] = ($number >= 1) ? $number : 1;
     return $_SESSION["noa"];
 }
+
 
 function lessAuthors()
 {
@@ -156,11 +167,13 @@ function lessAuthors()
     }
 }
 
+
 function moreAuthors()
 {
     haveSession();
     $_SESSION["noa"]++;
 }
+
 
 function resetNumberOfAuthors()
 {
@@ -169,15 +182,18 @@ function resetNumberOfAuthors()
     return !isset($_SESSION["noa"]);
 }
 
+
 function getBook()
 {
     return fromSESSION("book");
 }
 
+
 function setBook($book)
 {
     $_SESSION["book"] = $book;
 }
+
 
 function resetBook()
 {
@@ -185,6 +201,7 @@ function resetBook()
     unset($_SESSION["book"]);
     return !isset($_SESSION["book"]);
 }
+
 
 function getMoveState()
 {
@@ -194,82 +211,105 @@ function getMoveState()
     return fromSESSION("moveState");
 }
 
+
 function setMoveState($MoveState)
 {
     $_SESSION["moveState"] = $MoveState;
 }
 
+
+function resetMoveState()
+{
+    haveSession();
+    $_SESSION["moveState"] = MoveState::NOT_SELECTED;
+    resetMoveSqls();
+    resetMoveLocs();
+    resetMoveBooks();
+    return $_SESSION["moveState"] == MoveState::NOT_SELECTED;
+}
+
+
 function getMoveLocSql()
 {
     if (is_null(fromSESSION("locsql"))) {
         $_SESSION["locsql"] = [
-            "sql" => "", 
-            "types" => "", 
-            "params" => [] 
+            "sql" => "",
+            "types" => "",
+            "params" => []
         ];
     }
     return fromSESSION("locsql");
 }
 
+
 function setMoveLocSql($sql, $types = "", $params = [])
 {
     $_SESSION["locsql"] = [
-        "sql" => $sql, 
-        "types" => $types, 
-        "params" => $params 
+        "sql" => $sql,
+        "types" => $types,
+        "params" => $params
     ];
 }
+
 
 function getMoveBookSql()
 {
     if (is_null(fromSESSION("booksql"))) {
         $_SESSION["booksql"] = [
-            "sql" => "", 
-            "types" => "", 
-            "params" => [] 
+            "sql" => "",
+            "types" => "",
+            "params" => []
         ];
     }
     return fromSESSION("booksql");
 }
 
+
 function setMoveBookSql($sql, $types = "", $params = [])
 {
     $_SESSION["booksql"] = [
-        "sql" => $sql, 
-        "types" => $types, 
-        "params" => $params 
+        "sql" => $sql,
+        "types" => $types,
+        "params" => $params
     ];
 }
+
 
 function resetMoveSqls()
 {
+    $_SESSION["locsql"] = [
+        "sql" => "",
+        "types" => "",
+        "params" => []
+    ];
     $_SESSION["booksql"] = [
-        "sql" => "", 
-        "types" => "", 
-        "params" => [] 
+        "sql" => "",
+        "types" => "",
+        "params" => []
     ];
 }
 
+///////////////////               
 
-
-
-function movePushLocation($loc)
+function moveLocsPush($loc)
 {
     haveSession();
-    if (is_array(getMoveLocs())) {
+    if (is_array(moveLocsGetAll())) {
         array_push($_SESSION["moveLocs"], $loc);
     }
 }
 
-function movePushBook($boo)
+
+function moveBooksPush($boo)
 {
     haveSession();
-    if (is_array(getMoveBooks())) {
+    if (is_array(moveBooksGetAll())) {
         array_push($_SESSION["moveBooks"], $boo);
     }
 }
 
-function getMoveLocs()
+
+function moveLocsGetAll()
 {
     $arr = fromSESSION("moveLocs");
     if (is_null($arr)) {
@@ -278,7 +318,8 @@ function getMoveLocs()
     return $arr;
 }
 
-function getMoveBooks()
+
+function moveBooksGetAll()
 {
     $arr = fromSESSION("moveBooks");
     if (is_null($arr)) {
@@ -287,31 +328,17 @@ function getMoveBooks()
     return $arr;
 }
 
+
 function resetMoveLocs()
 {
     $_SESSION["moveLocs"] = [];
 }
 
+
 function resetMoveBooks()
 {
     $_SESSION["moveBooks"] = [];
 }
-
-function movePop() // ???
-{
-    $pop = [];
-    haveSession();
-    $pop = [
-        "moveLocs" => getMoveLocs(),
-        "moveBooks" => getMoveBooks()
-    ];
-    resetMoveSqls();
-    resetMoveLocs();
-    resetMoveBooks();
-    return $pop;
-}
-
-
 
 
 // function setMoveLocs($MoveLocs)
@@ -319,10 +346,12 @@ function movePop() // ???
 //     $_SESSION["moveLocs"] = $MoveLocs;
 // }
 
+
 // function setMoveBooks($MoveBooks)
 // {
 //     $_SESSION["moveBooks"] = $MoveBooks;
 // }
+
 
 // function movePopLocation()
 // {
@@ -332,6 +361,7 @@ function movePop() // ???
 //     }
 // }
 
+
 // function movePopBook($boo)
 // {
 //     haveSession();
@@ -339,3 +369,4 @@ function movePop() // ???
 //         return array_pop($_SESSION["moveBooks"]);
 //     }
 // }
+

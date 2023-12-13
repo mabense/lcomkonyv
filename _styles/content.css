@@ -29,6 +29,7 @@ label {
 .fullWidth span,
 .fullWidth input {
     width: fit-content;
+    height: fit-content;
 }
 
 label span,

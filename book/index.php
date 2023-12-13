@@ -24,8 +24,6 @@ handleAction();
 
 handleTableRow();
 
-resetNumberOfAuthors();
-
 $page = PAGE;
 $book = getBook();
 $location = getLocation();

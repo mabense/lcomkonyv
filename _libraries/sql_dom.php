@@ -153,12 +153,19 @@ function sqlTableRows($assocRows, $table, $assocColumnsHeaders, $onClickRoute, $
         setTableAllKeys($table->getAttribute("id"), $tableKeys);
     }
 
-    echo ">> ";
-    echo var_dump(getMoveLocSql()) . "<br />";
-    echo ">> ";
-    echo  var_dump(getMoveBookSql()) . "<br />";
-    echo var_dump(getMoveState()) . "<br />";
-    echo "<br />";
+    // echo ">> ";
+    // echo var_dump(getMoveLocSql()) . "<br />";
+    // echo ">> ";
+    // echo  var_dump(getMoveBookSql()) . "<br />";
+    // echo var_dump(getMoveState()) . "<br />";
+    // echo "<br />";
+
+    // echo ">> ";
+    // echo var_dump(moveLocsGetAll()) . "<br />";
+    // echo ">> ";
+    // echo  var_dump(moveBooksGetAll()) . "<br />";
+    // echo var_dump(getMoveState()) . "<br />";
+    // echo "<br />";
 }
 
 

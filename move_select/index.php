@@ -20,8 +20,6 @@ handleMissingPage();
 sqlConnect();
 handleLocationJump();
 
-resetNumberOfAuthors();
-
 handleAction();
 
 handleTableRow();
@@ -30,8 +28,6 @@ $page = PAGE;
 $location = getLocation();
 
 setMoveState(MoveState::SELECTING);
-$moveLoc = getMoveLocs();
-$moveBoo = getMoveBooks();
 
 if (newDOMDocument(BASE_TEMPLATE)) {
 
