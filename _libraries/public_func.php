@@ -20,7 +20,12 @@ function toDisplayText($page)
 
 function findPage($nextPage)
 {
-    // TODO: GET params
+    if (
+        ($nextPage != "cancel") or 
+        (PAGE != popPreviousPage())
+    ) {
+        popPreviousPage();
+    }
     $route = ROOT . $nextPage . DIRECTORY_SEPARATOR;
     if (file_exists($route . "index.php")) {
         return $nextPage;
