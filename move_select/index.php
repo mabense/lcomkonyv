@@ -115,8 +115,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
                 "series" => TableString::BOOK_SERIES,
                 "number" => "#"
             ],
-            /* */
-            "book", /*/"", /* */
+            "book",
             [
                 "id"
             ],

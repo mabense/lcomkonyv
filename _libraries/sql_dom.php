@@ -174,6 +174,13 @@ function sqlTableRow($table, $queryAssocRow, $assocColumnsHeaders, $onClickRoute
     // $dom = new DOMDocument();
     $dom = $table->ownerDocument;
 
+    // echo var_dump($table) . "<br />" . "<br />";
+    // echo var_dump($queryAssocRow) . "<br />" . "<br />";
+    // echo var_dump($assocColumnsHeaders) . "<br />" . "<br />";
+    // echo var_dump($onClickRoute) . "<br />" . "<br />";
+    // echo var_dump($rowIndex) . "<br />" . "<br />";
+    // exit;
+
     $elem = null;
     if (getMoveState() == MoveState::SELECTING) {
         $tableMark = "%id%";
@@ -191,11 +198,13 @@ function sqlTableRow($table, $queryAssocRow, $assocColumnsHeaders, $onClickRoute
         $cell = $dom->createElement("span");
         $dataArr = [];
         foreach ($assocColumnsHeaders as $column => $header) {
-            $data = $queryAssocRow[$column];
-            if (isset($data) && $data != "" && $data != 0)
-                array_push($dataArr, $queryAssocRow[$column]);
+            $data = "$queryAssocRow[$column]";
+            if (strlen($data) > 0) {
+                array_push($dataArr, $data);
+            }
         }
         $cell->textContent = implode(" : ", $dataArr);
+
         $elem->appendChild($cell);
 
         domSetStrings(

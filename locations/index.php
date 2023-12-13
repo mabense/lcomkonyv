@@ -145,8 +145,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
                 "series" => TableString::BOOK_SERIES,
                 "number" => "#"
             ],
-            /* */
-            "book", /*/"", /* */
+            "book",
             [
                 "id"
             ],
@@ -161,7 +160,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         domSetString("contentContainer", FeedbackString::PLACE_EMPTY, StringTarget::TEXT_CONTENT);
     }
 
-    $locationPathString = sqlGetLocationPathString($page);
+    $locationPathString = sqlGetLocationPathString();
 
     $buttons = $dom->getElementById("contentButtons");
 

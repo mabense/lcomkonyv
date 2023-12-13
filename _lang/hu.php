@@ -38,6 +38,7 @@ final class FeedbackString
     const CREATE_SUCCESS = "Sikeres létrehozás.";
     const EDIT_SUCCESS = "Változtatás elmentve.";
     const PLACE_EMPTY = "Ez a hely üres.";
+    const R_U_SURE_DELETE_LOCATION = "Biztos töröljük a \"%place%\" helyet?";
 }
 
 final class ButtonString
@@ -112,6 +113,7 @@ $pageName = [
     "new_book" => "új_könyv",
 
     "edit_location" => ButtonString::LOCATION_EDIT,
+    "delete_location" => "hely_törlése",
 
     "log_in" => "belépés",
     "sign_up" => "regisztráció",

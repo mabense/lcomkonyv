@@ -1,6 +1,6 @@
 <?php
 define("ROOT", ".." . DIRECTORY_SEPARATOR);
-define("PAGE", "delete_location");
+define("PAGE", "delete_page");
 
 require_once(ROOT . "const.php");
 require_once(ROOT . "requirements.php");
@@ -10,8 +10,6 @@ require_once(LIB_DIR . "sql_dom.php");
 require_once(LIB_DIR . "sql_session.php");
 
 haveSession();
-$success = false;
-$page = PAGE;
 
 if (!auth(false, DEV_USER)) {
     redirectTo(ROOT, "log_in");
@@ -19,142 +17,78 @@ if (!auth(false, DEV_USER)) {
 
 handleMissingPage();
 
-$tLocation = PLACE_TABLE;
-$tBook = BOOK_TABLE;
-// $tWriter = WRITER_TABLE;
-// $tWrote = BOOK_AUTHOR_TABLE;
-
-$locToDelete = popLocation(); // here
-$locToGo = getLocation(); // parent location
-
-$location = $locToDelete;
-
-if (isset($location)) {
-    $placeConditions = "`where`=?";
-    $bookConditions = "`location`=?";
-    $sqlTypes = "i";
-    $sqlParams = [
-        $location
-    ];
-} else {
-    pushFeedbackToLog(ErrorString::LOCATION_DELETE_FAILED, true);
-    redirectToPreviousPage();
-    exit;
-}
-
-
 sqlConnect();
+handleLocationJump();
 
+handleAction();
 
-$locsToMove = sqlPrepareBindExecute(
-    "SELECT `id` FROM $tLocation WHERE $placeConditions",
-    $sqlTypes,
-    $sqlParams,
-    __FUNCTION__
-)->get_result()->fetch_all(MYSQLI_ASSOC);
+handleTableRow();
 
-$booksToMove = sqlPrepareBindExecute(
-    "SELECT `id` FROM $tBook WHERE $bookConditions",
-    $sqlTypes,
-    $sqlParams,
-    __FUNCTION__
-)->get_result()->fetch_all(MYSQLI_ASSOC);
+$page = PAGE;
+$location = getLocation();
 
+if (newDOMDocument(BASE_TEMPLATE)) {
 
-$locChanges = "`where`=?";
-$locConds = [];
-$locTypes = "i";
-$locParams = [
-    $locToGo
-];
-foreach ($locsToMove as $key) {
-    $keyConds = [];
-    foreach ($key as $name => $value) {
-        array_push($keyConds, "`$name`=?");
-        $type = gettype($value);
-        switch ($type) {
-            case "boolean":
-            case "integer":
-                $locTypes .= "i";
-                break;
-            case "double":
-                $locTypes .= "d";
-                break;
-            case "string":
-                $locTypes .= "s";
-                break;
-            default:
-                echo "No SQL type for \"$type\" PHP type.";
-                exit;
+    domAddStyle("../_styles/query_page.css");
+
+    domMakeToolbarLoggedIn();
+
+    domAppendTemplateTo("content", TEMPLATE_DIR . "sql_result.htm");
+
+    domAppendTemplateTo("contentContainer", "./view.htm");
+
+    $tLocation = PLACE_TABLE;
+
+    if (isset($location)) {
+        $placeConditions = "`where`=?";
+        $bookConditions = "`location`=?";
+        $sqlTypes = "i";
+        $sqlParams = [
+            $location
+        ];
+
+        $stmt = sqlPrepareBindExecute(
+            "SELECT `name` FROM $tLocation WHERE `id`=?",
+            "i",
+            [
+                $location
+            ],
+            __FUNCTION__
+        );
+        if ($result = $stmt->get_result()) {
+            if ($row = $result->fetch_assoc()) {
+                $placeName = $row["name"];
+            }
         }
-        array_push($locParams, $value);
     }
-    array_push($locConds, "(" . implode(" AND ", $keyConds) . ")");
-}
-$locConds = implode(" OR ", $locConds);
 
-$bookChanges = "`location`=?";
-$bookConds = [];
-$bookTypes = "i";
-$bookParams = [
-    $locToGo
-];
-foreach ($booksToMove as $key) {
-    $keyConds = [];
-    foreach ($key as $name => $value) {
-        array_push($keyConds, "`$name`=?");
-        $type = gettype($value);
-        switch ($type) {
-            case "boolean":
-            case "integer":
-                $bookTypes .= "i";
-                break;
-            case "double":
-                $bookTypes .= "d";
-                break;
-            case "string":
-                $bookTypes .= "s";
-                break;
-            default:
-                echo "No SQL type for \"$type\" PHP type.";
-                exit;
-        }
-        array_push($bookParams, $value);
-    }
-    array_push($bookConds, "(" . implode(" AND ", $keyConds) . ")");
-}
-$bookConds = implode(" OR ", $bookConds);
+    domSetString("message", FeedbackString::R_U_SURE_DELETE_LOCATION, StringTarget::TEXT_CONTENT);
+    domSetString("message", $placeName, StringTarget::TEXT_CONTENT, "%place%");
 
-$locSQL = "UPDATE $tLocation SET $locChanges WHERE $locConds";
-$bookSQL = "UPDATE $tBook SET $bookChanges WHERE $bookConds";
-if (sizeof($locsToMove) > 0) {
-    sqlPrepareBindExecute(
-        $locSQL,
-        $locTypes,
-        $locParams,
-        __FUNCTION__
+    $locationPathString = sqlGetLocationPathString();
+
+    $buttons = $dom->getElementById("contentButtons");
+
+    $exitLoc = $dom->createElement("a", ButtonString::CANCEL);
+    $exitLoc->setAttribute("class", "a_button");
+    $exitLoc->setAttribute("href", "../" . findPage("cancel"));
+    $buttons->appendChild($exitLoc);
+
+    $delLoc = $dom->createElement("a", ButtonString::LOCATION_DELETE);
+    $delLoc->setAttribute("class", "a_button");
+    $delLoc->setAttribute("style", "background-color: red;");
+    $delLoc->setAttribute("href", "./delete.php");
+    $buttons->appendChild($delLoc);
+
+
+    domSetTitle(
+        pageToDisplayText($page),
+        $locationPathString
     );
-}
-if (sizeof($booksToMove) > 0) {
-    sqlPrepareBindExecute(
-        $bookSQL,
-        $bookTypes,
-        $bookParams,
-        __FUNCTION__
-    );
-}
 
-if(!sqlPrepareExecute(
-    "DELETE FROM $tLocation WHERE `id`=$locToDelete",
-    __FUNCTION__
-)) {
-    pushFeedbackToLog(ErrorString::LOCATION_DELETE_FAILED, true);
-    redirectToPreviousPage();
-    exit;
+    domPopFeedback();
 }
-
-
 sqlDisconnect();
 
-// redirectTo(ROOT, "exit_location");
-redirectToPreviousPage();
+global $dom;
+echo $dom->saveHTML();
