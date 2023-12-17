@@ -7,7 +7,7 @@ require_once(ROOT . "requirements.php");
 
 haveSession();
 
-if(!auth(true)){
+if(!auth(AuthLevel::GUEST)){
     redirectTo(ROOT, "home");
 }
 
@@ -18,7 +18,7 @@ handleAction();
 if (newDOMDocument(BASE_TEMPLATE)) {
 
     domMakeToolbar([
-        // "log_in"
+        "log_in"
     ]);
 
     domAppendTemplateTo("content", "./view.htm");

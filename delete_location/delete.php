@@ -13,7 +13,7 @@ haveSession();
 $success = false;
 $page = PAGE;
 
-if (!auth(false, DEV_USER)) {
+if (!auth(AuthLevel::USER)) {
     redirectTo(ROOT, "log_in");
 }
 

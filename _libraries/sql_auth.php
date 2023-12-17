@@ -33,7 +33,7 @@ function sqlLogout()
 function sqlLogin($name, $password)
 {
     $tUser = USER_TABLE;
-    $fields = "`password`";
+    $fields = "`name`, `password`";
     $sql = "SELECT $fields FROM $tUser WHERE `name`=?";
     
     $stmt = sqlPrepareBindExecute(
@@ -51,7 +51,7 @@ function sqlLogin($name, $password)
         pushFeedbackToLog(ErrorString::LOGIN_REJECTED, true);
         return false;
     }
-    return true;
+    return $user["name"];
 }
 
 

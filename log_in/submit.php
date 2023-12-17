@@ -3,7 +3,7 @@ require_once(LIB_DIR . "sql.php");
 require_once(LIB_DIR . "sql_auth.php");
 
 haveSession();
-$success = false;
+$userName = false;
 $page = PAGE;
 
 $user = fromGET("user");
@@ -20,12 +20,12 @@ if (
     && isset($pwd)
 ) {
     sqlConnect();
-    $success = sqlLogin($user, $pwd);
+    $userName = sqlLogin($user, $pwd);
     sqlDisconnect();
 }
 
-if ($success != false) {
-    setUser($user);
+if ($userName != false) {
+    setUser($userName);
     pushFeedbackToLog(FeedbackString::LOGIN_ACCEPTED);
     $page = /* * / "locations" /*/ PAGE /* */ ;
 } elseif (!isThereFeedback()) {

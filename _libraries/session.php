@@ -2,6 +2,13 @@
 // DON'T require: dom.php
 
 
+final class AuthLevel
+{
+    const GUEST = 0;
+    const USER = 1;
+}
+
+
 final class MoveState
 {
     const NOT_SELECTED = 0;
@@ -27,23 +34,15 @@ function fromSESSION($nameInSESSION)
 }
 
 
-function auth($acceptGuest, ...$acceptedUsers)
+function auth(...$AuthLevels)
 {
-    $user = getUserName();
-    $isGuest = !$user;
-    if (!$acceptGuest && $isGuest) {
+    $isGuest = is_null(getUserName());
+    $isUser = !$isGuest;
+    if ($isGuest && !in_array(AuthLevel::GUEST, $AuthLevels, true)) {
         return false;
     }
-    if (!$isGuest) {
-        if (!is_string($user)) {
-            return false;
-        }
-        if (!is_array($acceptedUsers)) {
-            return false;
-        }
-        if (!in_array($user, $acceptedUsers)) {
-            return false;
-        }
+    if ($isUser && !in_array(AuthLevel::USER, $AuthLevels, true)) {
+        return false;
     }
     return true;
 }
@@ -89,10 +88,10 @@ function setTableAllKeys($tableName, $keys)
 
 function resetTableAllKeys($tableName = null)
 {
-    if($tableName == null) {
+    if ($tableName == null) {
         resetTableAllKeys("placeList");
         resetTableAllKeys("bookList");
-    }else {
+    } else {
         setTableAllKeys($tableName, []);
         unset($_SESSION[$tableName . "AllKeys"]);
     }
@@ -377,4 +376,3 @@ function resetMoveBooks()
 //         return array_pop($_SESSION["moveBooks"]);
 //     }
 // }
-

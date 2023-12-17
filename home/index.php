@@ -7,7 +7,7 @@ require_once(ROOT . "requirements.php");
 
 haveSession();
 
-if(!auth(false, DEV_USER)){
+if(!auth(AuthLevel::USER)){
     redirectTo(ROOT, "log_in");
 }
 

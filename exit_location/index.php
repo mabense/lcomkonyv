@@ -11,7 +11,7 @@ require_once(LIB_DIR . "sql_dom.php");
 
 haveSession();
 
-if (!auth(false, DEV_USER)) {
+if (!auth(AuthLevel::USER)) {
     redirectTo(ROOT, "log_in");
 }
 

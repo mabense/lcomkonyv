@@ -175,7 +175,7 @@ function popPreviousPage()
         $_SESSION["prevPage"] = [];
         return PAGE;
     }
-    return array_pop(fromSESSION("prevPage"));
+    return array_pop($_SESSION["prevPage"]);
 }
 
 
