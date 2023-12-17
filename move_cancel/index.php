@@ -19,10 +19,6 @@ if (!auth(AuthLevel::USER)) {
 
 handleMissingPage();
 
-$user = fromGET("user");
-if (!isset($user)) {
-    $user = DEV_USER;
-}
 resetMoveState();
 
 redirectToPreviousPage();

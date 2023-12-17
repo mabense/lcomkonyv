@@ -62,11 +62,8 @@ function setUser($userName)
 
 function resetUser()
 {
-    resetLocation();
-    resetBook();
-    resetNumberOfAuthors();
-    resetMoveState();
-    unset($_SESSION["uName"]);
+    session_destroy();
+    haveSession();
     return !isset($_SESSION["uName"]);
 }
 

@@ -7,7 +7,7 @@ require_once(ROOT . "requirements.php");
 
 haveSession();
 
-if(!auth(AuthLevel::GUEST)){
+if (!auth(AuthLevel::GUEST)) {
     redirectTo(ROOT, "home");
 }
 
@@ -18,19 +18,19 @@ handleAction();
 if (newDOMDocument(BASE_TEMPLATE)) {
 
     domMakeToolbar([
-        "sign_up"
+        // "sign_up"
     ]);
 
     domAppendTemplateTo("content", "./view.htm");
 
     domSetStrings(
-        new TargetedString("forUser", FormString::USERNAME, StringTarget::TEXT_CONTENT), 
-        new TargetedString("forPassword", FormString::PASSWORD, StringTarget::TEXT_CONTENT), 
+        new TargetedString("forUser", FormString::USERNAME, StringTarget::TEXT_CONTENT),
+        new TargetedString("forPassword", FormString::PASSWORD, StringTarget::TEXT_CONTENT),
         new TargetedString("ok", FormString::LOGIN_SUBMIT, StringTarget::VALUE)
     );
 
     domSetTitle(pageToDisplayText(PAGE));
-    
+
     domPopFeedback();
 }
 

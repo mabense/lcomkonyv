@@ -20,12 +20,6 @@ function toDisplayText($page)
 
 function findPage($nextPage)
 {
-    if (
-        ($nextPage != "cancel") or 
-        (PAGE != popPreviousPage())
-    ) {
-        popPreviousPage();
-    }
     $route = ROOT . $nextPage . DIRECTORY_SEPARATOR;
     if (file_exists($route . "index.php")) {
         return $nextPage;
@@ -54,7 +48,10 @@ function redirectTo($root, $pageRoute)
 
 function redirectToPreviousPage()
 {
-    redirectTo(ROOT, popPreviousPage());
+    redirectTo(
+        ROOT,
+        PAGE == "cancel" ? getPreviousPage() : popPreviousPage()
+    );
 }
 
 
@@ -155,10 +152,19 @@ function pushPreviousPage()
 {
     haveSession();
     if (
-        is_null(fromSESSION("prevPage")) or
-        !is_array(fromSESSION("prevPage"))
+        !isset($_SESSION["prevPage"])
     ) {
         $_SESSION["prevPage"] = [];
+    }
+    if (in_array(PAGE, $_SESSION["prevPage"], true)) {
+        $keep = [];
+        foreach ($_SESSION["prevPage"] as $page) {
+            if ($page == PAGE) {
+                break;
+            }
+            array_push($keep, $page);
+        }
+        $_SESSION["prevPage"] = $keep;
     }
     array_push($_SESSION["prevPage"], PAGE);
 }
@@ -168,21 +174,30 @@ function popPreviousPage()
 {
     haveSession();
     if (
-        is_null(fromSESSION("prevPage")) or
-        !is_array(fromSESSION("prevPage")) or
-        sizeof(fromSESSION("prevPage")) <= 0
+        is_null(fromSESSION("prevPage"))
     ) {
-        $_SESSION["prevPage"] = [];
         return PAGE;
     }
     return array_pop($_SESSION["prevPage"]);
 }
 
 
+function getPreviousPage()
+{
+    haveSession();
+    if (
+        is_null(fromSESSION("prevPage"))
+        or sizeof(fromSESSION("prevPage")) == 0
+    ) {
+        return PAGE;
+    }
+    return $_SESSION["prevPage"][sizeof($_SESSION["prevPage"])];
+}
+
+
 function canMoveFromHere()
 {
     resetTableAllKeys();
-    pushPreviousPage();
 
     $GLOBALS["moveStt"] = getMoveState();
     global $moveStt;

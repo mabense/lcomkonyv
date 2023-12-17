@@ -1,15 +1,11 @@
 <?php
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
 $success = false;
 $page = PAGE;
 
-$user = fromGET("user");
-if (!isset($user)) {
-    $user = DEV_USER;
-}
 $loc = getLocation();
 $author = fromPOST("writer");
 $title = fromPOST("title");
@@ -63,7 +59,7 @@ if (!isset($loc)) {
         if (is_array($author) && (sizeof($author) > 0)) {
             $fields = "`book`, `author`";
             foreach ($author as $key => $authorId) {
-                if(!is_nan($authorId) && $authorId > 0) {
+                if (!is_nan(floatval($authorId)) && $authorId > 0) {
                     $authorAdded = sqlPrepareBindExecute(
                         "INSERT INTO $tAuthor ($fields) VALUES (?, ?)",
                         "ii",
@@ -81,7 +77,6 @@ if (!isset($loc)) {
 }
 
 if ($success != false) {
-    setUser($user);
     pushFeedbackToLog(FeedbackString::CREATE_SUCCESS);
     $page = "locations";
 } elseif (!isThereFeedback()) {

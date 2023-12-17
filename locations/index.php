@@ -25,6 +25,7 @@ handleAction();
 handleTableRow();
 
 canMoveFromHere();
+pushPreviousPage();
 
 $page = PAGE;
 $location = getLocation();

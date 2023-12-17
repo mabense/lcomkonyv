@@ -1,15 +1,11 @@
 <?php
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
 $success = false;
 $page = PAGE;
 
-$user = fromGET("user");
-if (!isset($user)) {
-    $user = DEV_USER;
-}
 $book = getBook();
 $loc = getLocation();
 $author = fromPOST("writer");
@@ -174,7 +170,6 @@ if (!isset($loc)) {
 }
 
 if ($success != false) {
-    setUser($user);
     pushFeedbackToLog(FeedbackString::EDIT_SUCCESS);
 } elseif (!isThereFeedback()) {
     pushFeedbackToLog(ErrorString::EDIT_FAIL, true);

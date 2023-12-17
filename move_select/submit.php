@@ -1,6 +1,6 @@
 <?php
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
 $success = false;
@@ -8,11 +8,6 @@ $page = PAGE;
 
 resetMoveLocs();
 resetMoveBooks();
-
-$user = fromGET("user");
-if (!isset($user)) {
-    $user = DEV_USER;
-}
 
 $tLocation = PLACE_TABLE;
 $tBook = BOOK_TABLE;
@@ -54,6 +49,8 @@ if (!is_null($selectedLocs)) {
         echo "place keys: ";
         echo var_dump(moveLocsGetAll()) . "<br />";
     }
+} else {
+    $selectedLocs = [];
 }
 
 if ($debug) {
@@ -70,6 +67,8 @@ if (!is_null($selectedBooks)) {
         echo "book keys: ";
         echo var_dump(moveBooksGetAll()) . "<br />";
     }
+} else {
+    $selectedBooks = [];
 }
 
 
@@ -82,6 +81,8 @@ if ($debug) {
     exit;
 }
 
-setMoveState(MoveState::SELECTED);
+if (sizeof($selectedBooks) + sizeof($selectedLocs) > 0) {
+    setMoveState(MoveState::SELECTED);
+}
 
 redirectToPreviousPage();

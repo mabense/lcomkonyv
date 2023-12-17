@@ -1,15 +1,11 @@
 <?php
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
 $success = false;
 $page = PAGE;
 
-$user = fromGET("user");
-if (!isset($user)) {
-    $user = DEV_USER;
-}
 $loc = getLocation();
 $name = fromPOST("name");
 
@@ -57,7 +53,6 @@ if (!isset($name) or $name === "") {
 }
 
 if ($success != false) {
-    setUser($user);
     pushFeedbackToLog(FeedbackString::CREATE_SUCCESS);
     $page = "locations";
 } elseif (!isThereFeedback()) {

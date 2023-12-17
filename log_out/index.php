@@ -6,7 +6,7 @@ require_once(ROOT . "const.php");
 require_once(ROOT . "requirements.php");
 
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
 
@@ -19,7 +19,7 @@ $page = "home";
 
 if ($user != false) {
     sqlConnect();
-    $out = sqlLogout();
+    $out = authLogout();
     sqlDisconnect();
     if ($out) {
         pushFeedbackToLog(FeedbackString::LOGOUT_SUCCESS);

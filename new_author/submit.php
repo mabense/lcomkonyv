@@ -1,15 +1,11 @@
 <?php
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
 $success = false;
 $page = PAGE;
 
-$user = fromGET("user");
-if (!isset($user)) {
-    $user = DEV_USER;
-}
 $sur = fromPOST("sur");
 $given = fromPOST("given");
 $clar = fromPOST("clar");
@@ -63,7 +59,6 @@ if (
 }
 
 if ($success != false) {
-    setUser($user);
     pushFeedbackToLog(FeedbackString::CREATE_SUCCESS);
     $page = "authors";
 } elseif (!isThereFeedback()) {

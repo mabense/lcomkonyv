@@ -16,5 +16,4 @@ define("TENDER_TABLE", "tender");
 define("MILESTONE_TABLE", "milestone");
 define("DOCUMENT_TABLE", "document");
 
-define("DEV_USER", "x");
-define("DEV_PWD", "xxxx1111");
+define("LOCAL_PWD", "xxxx1111");

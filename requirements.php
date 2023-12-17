@@ -12,9 +12,15 @@ if (file_exists(PRIVATE_FUNC)) {
     require_once(PRIVATE_FUNC);
 }
 
-// haveSession();
+haveSession();
+if (
+    PAGE == "cancel"
+) {
+    redirectTo(ROOT, popPreviousPage());
+}
 // echo "previous page: ";
-// echo fromSESSION("prevPage") . "<br />";
+// echo var_dump(fromSESSION("prevPage")) . "<br />";
+
 // echo "place keys: ";
 // echo var_dump(moveLocsGetAll()) . "<br />";
 // echo "book keys: ";

@@ -1,33 +1,25 @@
 <?php
 require_once(LIB_DIR . "sql.php");
-require_once(LIB_DIR . "sql_auth.php");
+require_once(LIB_DIR . "auth.php");
 
 haveSession();
-$userName = false;
+$success = false;
 $page = PAGE;
 
-$user = fromGET("user");
-if(!isset($user)) {
-    $user = DEV_USER;
-}
 $pwd = fromPOST("pwd");
-if(!isset($pwd)) {
-    $pwd = DEV_PWD;
-}
 
 if (
-    isset($user)
-    && isset($pwd)
+    isset($pwd)
 ) {
     sqlConnect();
-    $userName = sqlLogin($user, $pwd);
+    $success = authLogin(/* */ $pwd /*/ LOCAL_PWD /* */);
     sqlDisconnect();
 }
 
-if ($userName != false) {
-    setUser($userName);
+if ($success != false) {
+    setUser($success);
     pushFeedbackToLog(FeedbackString::LOGIN_ACCEPTED);
-    $page = /* * / "locations" /*/ PAGE /* */ ;
+    $page = /* * / "locations" /*/ PAGE /* */;
 } elseif (!isThereFeedback()) {
     pushFeedbackToLog(ErrorString::LOGIN_FAILED, true);
 }
