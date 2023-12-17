@@ -65,8 +65,10 @@ if (newDOMDocument(BASE_TEMPLATE)) {
             // "givenname" => "givenname", 
             // "clarification" => "clarification"
         ],
-        "",
-        [],
+        "books_by_author",
+        [
+            "id"
+        ],
         "authorList"
     );
 

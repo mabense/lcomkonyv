@@ -186,6 +186,18 @@ function resetNumberOfAuthors()
 }
 
 
+function getAuthor()
+{
+    return fromSESSION("author");
+}
+
+
+function setAuthor($authorID)
+{
+    $_SESSION["author"] = $authorID;
+}
+
+
 function getBook()
 {
     return fromSESSION("book");

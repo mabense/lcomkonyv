@@ -137,6 +137,9 @@ function handleTableRow()
             case 'book':
                 setBook($keys["id"]);
                 break;
+            case 'books_by_author':
+                setAuthor($keys["id"]);
+                break;
             default:
                 break;
         }
