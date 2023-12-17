@@ -5,6 +5,8 @@
     --lightest: white;
 
     --table-bordercolor: var(--darkest);
+    --table-head-bg: var(--darkest);
+    --table-head: var(--lightest);
     --table-odd-bg: var(--dark);
     --table-odd: var(--table-bordercolor);
     --table-even-bg: var(--darker);
@@ -38,8 +40,8 @@
 }
 
 .contentTable th {
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--table-head-bg);
+    color: var(--table-head);
 }
 
 /* #contentButtons {
