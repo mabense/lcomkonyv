@@ -36,13 +36,50 @@ if (newDOMDocument(BASE_TEMPLATE)) {
 
     domMakeToolbarLoggedIn();
 
-    domAppendTemplateTo("content", TEMPLATE_DIR . "sql_result.htm");
+    domAppendTemplateTo("content", "./view.htm");
+    domAppendTemplateTo("mainForm", "./search.htm");
+    domAppendTemplateTo("contentContainer", "./result.htm");
 
-    domAppendTemplateTo("contentContainer", "./view.htm");
+    domSetString("ok", FormString::SEARCH_SUBMIT, StringTarget::VALUE);
 
     $tAuthor = WRITER_TABLE;
-    // domSetString("authorListHead", TableString::AUTHORS, StringTarget::TEXT_CONTENT);
-    
+
+    $letters = [];
+    $letterFields = "SUBSTRING(`surname`, 1, 1)";
+    $lettersStmt = sqlPrepareExecute(
+        "SELECT $letterFields AS 'letter' FROM $tAuthor GROUP BY `letter`",
+        __FUNCTION__
+    );
+    // $lettersStmt = new mysqli_stmt();
+    if ($result = $lettersStmt->get_result()) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($letters, $row["letter"]);
+        }
+    }
+
+    global $dom;
+    // $dom = new DOMDocument();
+    $letterSelect = $dom->getElementById("letter");
+    foreach ($letters as $letter) {
+        $opt = $dom->createElement("option", $letter);
+        $opt->setAttribute("id", "letter-" . $letter);
+        domSetString("letter-" . $letter, $letter);
+        $letterSelect->appendChild($opt);
+    }
+
+    if (fromPOST("letter") == null) {
+        $letter = "A";
+    } else {
+        $letter = fromPOST("letter");
+    }
+    $dom->getElementById("letter-$letter")->setAttribute("selected", "selected");
+
+    $conditions = "`author` LIKE ?";
+    $types = "s";
+    $params = [
+        "$letter%"
+    ];
+
     $full_name = "CONCAT(
         `$tAuthor`.`surname`, ', ', `$tAuthor`.`givenname`, 
         IF(`$tAuthor`.`clarification` = '', 
@@ -54,10 +91,12 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     )";
     $fields = "`id`, $full_name AS 'author'";
 
-    $sql = "SELECT $fields FROM $tAuthor ORDER BY `author` ASC";
+    $sql = "SELECT $fields FROM $tAuthor HAVING $conditions ORDER BY `author` ASC";
 
-    sqlTable(
+    sqlTableParams(
         $sql,
+        $types,
+        $params,
         [
             // "id" => "id", 
             "author" => TableString::AUTHOR_FULLNAME
