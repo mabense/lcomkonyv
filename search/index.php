@@ -56,126 +56,24 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         $tWriter = WRITER_TABLE;
         $tWrote = BOOK_AUTHOR_TABLE;
 
-        // $placeConditions = "ISNULL(`where`)";
-
         $bookConditions = "";
         $sqlTypes = "";
         $sqlParams = [];
 
+        $titleAssoc = interpretInput($title, "`$tBook`.`title`");
+        $sqlTypes .= $titleAssoc["types"];
+        array_push($sqlParams, ...$titleAssoc["params"]);
 
-        $titleCond = "TRUE";
-        $titleNegCond = "TRUE";
-        if ($titleWords = explode(" ", $title)) {
-            $isFirst = true;
-            $isFirstNeg = true;
-            $negWords = [];
-            foreach ($titleWords as $word) {
-                if (strlen($word) > 0) {
-                    $sqlTypes .= "s";
-                    if (substr($word, 0, 1) == "-") {
-                        if ($isFirstNeg) {
-                            $isFirstNeg = false;
-                            $titleNegCond = "";
-                        } else {
-                            $titleNegCond .= " AND ";
-                        }
-                        $titleNegCond .= "`$tBook`.`title` NOT LIKE ?";
-                        array_push($negWords, substr($word, 1));
-                    } else {
-                        if ($isFirst) {
-                            $isFirst = false;
-                            $titleCond = "";
-                        } else {
-                            $titleCond .= " OR ";
-                        }
-                        $titleCond .= "`$tBook`.`title` LIKE ?";
-                        array_push($sqlParams, "%$word%");
-                    }
-                }
-            }
-            foreach($negWords as $word) {
-                array_push($sqlParams, "%$word%");
-            }
-        }
-        
-        $seriesCond = "TRUE";
-        $seriesNegCond = "TRUE";
-        if ($seriesWords = explode(" ", $series)) {
-            $isFirst = true;
-            $isFirstNeg = true;
-            $negWords = [];
-            foreach ($seriesWords as $word) {
-                if (strlen($word) > 0) {
-                    $sqlTypes .= "s";
-                    if (substr($word, 0, 1) == "-") {
-                        if ($isFirstNeg) {
-                            $isFirstNeg = false;
-                            $seriesNegCond = "";
-                        } else {
-                            $seriesNegCond .= " AND ";
-                        }
-                        $seriesNegCond .= "`$tBook`.`series` NOT LIKE ?";
-                        array_push($negWords, substr($word, 1));
-                    } else {
-                        if ($isFirst) {
-                            $isFirst = false;
-                            $seriesCond = "";
-                        } else {
-                            $seriesCond .= " OR ";
-                        }
-                        $seriesCond .= "`$tBook`.`series` LIKE ?";
-                        array_push($sqlParams, "%$word%");
-                    }
-                }
-            }
-            foreach($negWords as $word) {
-                array_push($sqlParams, "%$word%");
-            }
-        }
-        
-        $writerCond = "TRUE";
-        $writerNegCond = "TRUE";
-        if ($writerWords = explode(" ", $writer)) {
-            $isFirst = true;
-            $isFirstNeg = true;
-            $negWords = [];
-            foreach ($writerWords as $word) {
-                if (strlen($word) > 0) {
-                    $sqlTypes .= "s";
-                    if (substr($word, 0, 1) == "-") {
-                        if ($isFirstNeg) {
-                            $isFirstNeg = false;
-                            $writerNegCond = "";
-                        } else {
-                            $writerNegCond .= " AND ";
-                        }
-                        $writerNegCond .= "`authors` NOT LIKE ?";
-                        array_push($negWords, substr($word, 1));
-                    } else {
-                        if ($isFirst) {
-                            $isFirst = false;
-                            $writerCond = "";
-                        } else {
-                            $writerCond .= " OR ";
-                        }
-                        $writerCond .= "`authors` LIKE ?";
-                        array_push($sqlParams, "%$word%");
-                    }
-                }
-            }
-            foreach($negWords as $word) {
-                array_push($sqlParams, "%$word%");
-            }
-        }
+        $seriesAssoc = interpretInput($series, "`$tBook`.`series`");
+        $sqlTypes .= $seriesAssoc["types"];
+        array_push($sqlParams, ...$seriesAssoc["params"]);
 
-        $bookConditions = "($titleCond) AND $titleNegCond AND ($seriesCond) AND $seriesNegCond";
-        $writerConditions = "($writerCond) AND $writerNegCond";
+        $writerAssoc = interpretInput($writer, "`authors`");
+        $sqlTypes .= $writerAssoc["types"];
+        array_push($sqlParams, ...$writerAssoc["params"]);
 
-        // $bookConditions = "`$tBook`.`title` LIKE ?";
-        // $sqlTypes = "s";
-        // $sqlParams = [
-        //     "%" . "Dűne" . "%"
-        // ];
+        $bookConditions = $titleAssoc["conditions"] . " AND " . $seriesAssoc["conditions"];
+        $writerConditions = $writerAssoc["conditions"];
 
         domSetString("bookListHead", TableString::BOOKS, StringTarget::TEXT_CONTENT);
 
@@ -215,7 +113,8 @@ if (newDOMDocument(BASE_TEMPLATE)) {
                 "series" => TableString::BOOK_SERIES,
                 "number" => TableString::BOOK_NUMBER
             ],
-            /* */ "book", /*/"", /* */
+            /* */
+            "book", /*/"", /* */
             [
                 "id"
             ],
@@ -239,7 +138,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
 
     // $dom = new DOMDocument();
 
-    if(getMoveState() == MoveState::SELECTED) {
+    if (getMoveState() == MoveState::SELECTED) {
         $unmove = $dom->createElement("a", ButtonString::MOVE_CANCEL);
         $unmove->setAttribute("class", "a_button");
         $unmove->setAttribute("href", "../" . findPage("move_cancel"));
