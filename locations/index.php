@@ -135,7 +135,8 @@ if (newDOMDocument(BASE_TEMPLATE)) {
                 `$tBook` LEFT JOIN `$tWrote` ON `$tBook`.`id`=`$tWrote`.`book`
             ) LEFT JOIN `$tWriter` ON `$tWriter`.`id`=`$tWrote`.`author`
         )
-        WHERE $bookConditions GROUP BY `$tBook`.`id` ORDER BY `authors`, `series`, `number`, `$tBook`.`title`";
+        WHERE $bookConditions GROUP BY `$tBook`.`id` 
+        ORDER BY `series`, `authors`, `number`, `$tBook`.`title`";
         sqlTableParams(
             $sql,
             $sqlTypes,

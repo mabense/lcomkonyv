@@ -102,7 +102,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
             )
             WHERE $bookConditions GROUP BY `$tBook`.`id`
             HAVING $writerConditions
-            ORDER BY `authors`, `series`, `number`, `$tBook`.`title`";
+            ORDER BY `series`, `authors`, `number`, `$tBook`.`title`";
         sqlTableParams(
             $sql,
             $sqlTypes,
