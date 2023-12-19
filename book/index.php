@@ -136,6 +136,11 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     $jump->setAttribute("href", "../" . findPage("locations") . "/?jump=$location");
     $buttons->appendChild($jump);
 
+    $move = $dom->createElement("a", ButtonString::BOOK_MOVE);
+    $move->setAttribute("class", "a_button");
+    $move->setAttribute("href", "../" . findPage("book_move") . "/?jump=$location");
+    $buttons->appendChild($move);
+
     $edit = $dom->createElement("a", ButtonString::BOOK_EDIT);
     $edit->setAttribute("class", "a_button");
     $edit->setAttribute("href", "../" . findPage("edit_book"));
