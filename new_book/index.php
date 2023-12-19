@@ -94,6 +94,9 @@ if (newDOMDocument(BASE_TEMPLATE)) {
                 $writer_name = $writer["name"];
                 $opt = $dom->createElement("option");
                 $opt->setAttribute("value", $writer_id);
+                if($writer_id == getAuthor()) {
+                    $opt->setAttribute("selected", "selected");
+                }
                 $opt->textContent = $writer_name;
                 $writerSelect->appendChild($opt);
             }

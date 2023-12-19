@@ -10,6 +10,8 @@ $sur = fromPOST("sur");
 $given = fromPOST("given");
 $clar = fromPOST("clar");
 
+$id = 0;
+
 if (
     (!isset($sur) or $sur === "") and
     (!isset($given) or $given === "") and
@@ -55,11 +57,15 @@ if (
         );
     }
 
+    // $success = new mysqli_stmt();
+    $id = ($success != false) ? $success->insert_id : 0;
+
     sqlDisconnect();
 }
 
 if ($success != false) {
     pushFeedbackToLog(FeedbackString::CREATE_SUCCESS);
+    setAuthor($id);
     $page = "authors";
 } elseif (!isThereFeedback()) {
     pushFeedbackToLog(ErrorString::CREATE_FAIL, true);
