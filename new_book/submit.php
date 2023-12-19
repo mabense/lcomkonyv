@@ -59,6 +59,7 @@ if (!isset($loc)) {
         if (is_array($author) && (sizeof($author) > 0)) {
             $fields = "`book`, `author`";
             foreach ($author as $key => $authorId) {
+                setAuthor($authorId);
                 if (!is_nan(floatval($authorId)) && $authorId > 0) {
                     $authorAdded = sqlPrepareBindExecute(
                         "INSERT INTO $tAuthor ($fields) VALUES (?, ?)",
