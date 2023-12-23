@@ -15,7 +15,7 @@ handleMissingPage();
 
 handleAction();
 
-pushPreviousPage();
+pushPreviousPage("search");
 
 if (newDOMDocument(BASE_TEMPLATE)) {
 
