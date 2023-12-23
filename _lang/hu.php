@@ -1,10 +1,5 @@
 <?php
 
-final class SubString
-{
-    const RENAMING = " átnevezése";
-}
-
 final class ErrorString
 {
     const SESSION_NOT_RESET = "Session hiba. Töröld a sütiket, és frissíts.";
@@ -47,7 +42,7 @@ final class ButtonString
     const AUTHOR_NEW = "Új szerző";
     const LOCATION_NO_EXIT = "Nincs kijjebb";
     const LOCATION_EXIT = "Kijjebb lépés";
-    const LOCATION_EDIT = "Hely" . SubString::RENAMING;
+    const LOCATION_EDIT = "Hely átnevezése";
     const LOCATION_NEW = "Új hely ide";
     const LOCATION_DELETE = "Hely törlése, tartalom kijjebb léptetése";
     const BOOK_NEW = "Új könyv ide";
@@ -66,6 +61,7 @@ final class DisplayString
     const MAIN_TITLE = "Bense könyvtár";
     const TITLE_SEPARATOR = " - ";
     const LOGIN_GREETING = "Üdv!";
+    const RENAMING = "%what% átnevezése";
 }
 
 final class TableString
@@ -101,6 +97,7 @@ final class FormString
     const CREATE_SUBMIT = "Létrehozás";
     const EDIT_SUBMIT = "Mentés";
     const SEARCH_SUBMIT = "Keresés";
+    const SELECT_SUBMIT = "Megjelöltek kiválasztása";
 }
 
 

@@ -151,6 +151,17 @@ function handleTableRow()
 }
 
 
+function handleNewLang()
+{
+    haveSession();
+    $lang = fromGET("newlang");
+    if (isset($lang)) {
+        setLang($lang);
+        redirectTo(ROOT, PAGE);
+    }
+}
+
+
 function pushPreviousPage()
 {
     haveSession();
@@ -216,6 +227,7 @@ function canMoveFromHere()
         case MoveState::SELECTED:
             break;
         default:
+            resetMoveSqls();
             break;
     }
 }

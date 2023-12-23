@@ -136,6 +136,9 @@ function domAddStyle($stylesheet)
 
 function domMakeToolbar($pages)
 {
+    handleNewLang();
+
+    $dom = new DOMDocument();
     global $dom;
     if (is_array($pages)) {
         $toolbar = $dom->getElementById("toolbar");
@@ -148,6 +151,21 @@ function domMakeToolbar($pages)
             $toolbar->appendChild($aTag);
         }
     }
+    $langPick = $dom->createElement("select");
+    $langPick->setAttribute("style", "width: 50%; background-color: transparent; ");
+    $route = "./?newlang=";
+    $langPick->setAttribute("onchange", "window.location='$route' + this.value;");
+    $lang = getLang();
+    foreach (LANG_ASSOC as $code => $name) {
+        $opt = $dom->createElement("option");
+        $opt->setAttribute("value", $code);
+        $opt->textContent = $name;
+        if ($code == $lang) {
+            $opt->setAttribute("selected", "selected");
+        }
+        $langPick->appendChild($opt);
+    }
+    $toolbar->appendChild($langPick);
 }
 
 
@@ -164,7 +182,7 @@ function domMakeToolbarLoggedIn()
 
 function domDeleteElementById($id)
 {
-    $dom = new DOMDocument();
+    // $dom = new DOMDocument();
     global $dom;
     $elem = $dom->getElementById($id);
     if (isset($elem)) {

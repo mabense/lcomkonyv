@@ -147,6 +147,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         $locationPathString
     );
 
+    domSetString("ok", FormString::SELECT_SUBMIT, StringTarget::VALUE);
 
     // pushFeedbackToLog("path: " . implode(", ", getLocationPath()));
     // $_str = [];

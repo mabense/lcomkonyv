@@ -44,3 +44,10 @@ define("DOCUMENT_UPLOADED", "yes");
 define("DOCUMENT_REJECTED", "in_part");
 define("DOCUMENT_ACCEPTED", "yes");
 define("DOCUMENT_DELETED", "no");
+
+define("DEFAULT_LANG", "hu");
+define("LANG_ASSOC", [
+    "de" => "deutsch", 
+    "uk" => "english", 
+    "hu" => "magyar"
+]);

@@ -47,7 +47,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         );
         if ($result = $stmt->get_result()) {
             if ($row = $result->fetch_assoc()) {
-                $page = $row["name"] . SubString::RENAMING;
+                $page = str_replace("%what%", $row["name"], DisplayString::RENAMING);
             }
         }
     }

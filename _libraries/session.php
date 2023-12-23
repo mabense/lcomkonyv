@@ -62,8 +62,10 @@ function setUser($userName)
 
 function resetUser()
 {
+    $lang = getLang();
     session_destroy();
     haveSession();
+    setLang($lang);
     return !isset($_SESSION["uName"]);
 }
 
@@ -237,7 +239,7 @@ function setMoveState($MoveState)
 function resetMoveState()
 {
     haveSession();
-    resetMoveSqls();
+    // resetMoveSqls();
     resetMoveLocs();
     resetMoveBooks();
     setMoveState(MoveState::NOT_SELECTED);
@@ -356,32 +358,26 @@ function resetMoveBooks()
     unset($_SESSION["moveBooks"]);
 }
 
+function setLang($langCode)
+{
+    $langAssoc = LANG_ASSOC;
+    if (key_exists($langCode, $langAssoc)) {
+        return $_SESSION["lang"] = $langCode;
+    }
+    return setLang(DEFAULT_LANG);
+}
 
-// function setMoveLocs($MoveLocs)
-// {
-//     $_SESSION["moveLocs"] = $MoveLocs;
-// }
-
-
-// function setMoveBooks($MoveBooks)
-// {
-//     $_SESSION["moveBooks"] = $MoveBooks;
-// }
-
-
-// function movePopLocation()
-// {
-//     haveSession();
-//     if (is_array(getMoveLocs())) {
-//         return array_pop($_SESSION["moveLocs"]);
-//     }
-// }
-
-
-// function movePopBook($boo)
-// {
-//     haveSession();
-//     if (is_array(getMoveLocs())) {
-//         return array_pop($_SESSION["moveBooks"]);
-//     }
-// }
+function getLang()
+{
+    $lang = fromSESSION("lang");
+    if (!is_null($lang) && key_exists($lang, LANG_ASSOC)) {
+        if(file_exists(LANG_DIR . $lang . ".php")) {
+            return $lang;
+        }
+        else{
+            pushFeedbackToLog("Language \"" . LANG_ASSOC[$lang] . "\" not found.", true);
+        }
+    }
+    setLang(DEFAULT_LANG);
+    return DEFAULT_LANG;
+}

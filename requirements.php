@@ -1,9 +1,14 @@
 <?php
 
-require_once(LANGUAGE_FILE);
 require_once(CONFIG_FILE);
 require_once(LIB_DIR . "feedback_log.php");
 require_once(LIB_DIR . "session.php");
+haveSession();
+/* * /
+require_once(LANGUAGE_FILE);
+/*/
+require_once(LANG_DIR . getLang() . ".php");
+/* */
 require_once(LIB_DIR . "public_func.php");
 require_once(LIB_DIR . "dom.php");
 
@@ -12,12 +17,15 @@ if (file_exists(PRIVATE_FUNC)) {
     require_once(PRIVATE_FUNC);
 }
 
-haveSession();
 if (
     PAGE == "cancel"
 ) {
     redirectTo(ROOT, popPreviousPage());
 }
+
+// echo getLang();
+// exit;
+
 // echo "previous page: ";
 // echo var_dump(fromSESSION("prevPage")) . "<br />";
 
