@@ -58,7 +58,7 @@ final class ButtonString
 
 final class DisplayString
 {
-    const MAIN_TITLE = "Bense könyvtár";
+    const MAIN_TITLE = "könyvtár";
     const TITLE_SEPARATOR = " - ";
     const LOGIN_GREETING = "Üdv!";
     const RENAMING = "%what% átnevezése";

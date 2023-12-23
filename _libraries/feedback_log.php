@@ -15,8 +15,8 @@ function isThereFeedback()
 
 function getFeedbackLog()
 {
-    if (isset($_SESSION["log"])) {
-        return $_SESSION["log"];
+    if (isset($_SESSION["bib_" . "log"])) {
+        return $_SESSION["bib_" . "log"];
     } else {
         return false;
     }
@@ -29,17 +29,17 @@ function pushFeedbackToLog($message, $isError = false)
     //     $message = $message->value;
     // }
 
-    if (!isset($_SESSION["log"])) {
-        $_SESSION["log"] = [];
+    if (!isset($_SESSION["bib_" . "log"])) {
+        $_SESSION["bib_" . "log"] = [];
     }
-    array_push($_SESSION["log"], [$message, $isError]);
+    array_push($_SESSION["bib_" . "log"], [$message, $isError]);
 }
 
 
 function resetFeedbackLog()
 {
-    if (isset($_SESSION["log"])) {
-        $_SESSION["log"] = [];
-        unset($_SESSION["log"]);
+    if (isset($_SESSION["bib_" . "log"])) {
+        $_SESSION["bib_" . "log"] = [];
+        unset($_SESSION["bib_" . "log"]);
     }
 }

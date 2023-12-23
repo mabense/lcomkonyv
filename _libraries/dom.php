@@ -114,7 +114,7 @@ function domSetTitle($pageTitle = "", $fullTitle = "")
         $contentTitle->textContent = ($fullTitle !== "") ? $fullTitle : $pageTitle;
     }
     if ($titleTag = domGetElementByTagName("title")) {
-        $titleTag->textContent = DisplayString::MAIN_TITLE;
+        $titleTag->textContent = toDisplayText(DisplayString::MAIN_TITLE);
         if ($pageTitle !== "") {
             $titleTag->textContent .= DisplayString::TITLE_SEPARATOR . $pageTitle;
         }

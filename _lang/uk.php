@@ -58,7 +58,7 @@ final class ButtonString
 
 final class DisplayString
 {
-    const MAIN_TITLE = "Bense library";
+    const MAIN_TITLE = "library";
     const TITLE_SEPARATOR = " - ";
     const LOGIN_GREETING = "Hello there!";
     const RENAMING = "Rename %what%";

@@ -22,12 +22,12 @@ handleLocationJump();
 
 handleAction();
 
+handleLetter();
+
 handleTableRow();
 resetTableAllKeys();
 
 pushPreviousPage();
-
-handleLetter();
 
 $page = PAGE;
 $location = getLocation();
@@ -47,6 +47,7 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     $tAuthor = WRITER_TABLE;
 
     $letters = [];
+    $firstLetter = "";
     $letterFields = "SUBSTRING(`surname`, 1, 1)";
     $lettersStmt = sqlPrepareExecute(
         "SELECT $letterFields AS 'letter' FROM $tAuthor GROUP BY `letter`",
@@ -55,7 +56,13 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     // $lettersStmt = new mysqli_stmt();
     if ($result = $lettersStmt->get_result()) {
         while ($row = $result->fetch_assoc()) {
-            array_push($letters, $row["letter"]);
+            $ltr = $row["letter"];
+            if (strlen($ltr) > 0) {
+                if ($firstLetter == "") {
+                    $firstLetter = $ltr;
+                }
+                array_push($letters, $ltr);
+            }
         }
     }
 
@@ -71,14 +78,12 @@ if (newDOMDocument(BASE_TEMPLATE)) {
         domSetString("letter-" . $letter, $letter);
         $letterSelect->appendChild($opt);
     }
-    if (fromSESSION("letter") == null) {
-        $letter = "A";
-    } else {
-        $letter = fromSESSION("letter");
-    }
+    $sessLetter = fromSESSION("letter");
+    $letter = ($sessLetter == null) ? $firstLetter : $sessLetter;
+
     $selectedLetter = $dom->getElementById("letter-$letter");
     $selectedLetter->setAttribute("selected", "selected");
-    
+
 
     $conditions = "`author` LIKE ?";
     $types = "s";

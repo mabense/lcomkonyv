@@ -167,7 +167,7 @@ function handleLetter()
     haveSession();
     $letter = fromGET("letter");
     if (isset($letter)) {
-        $_SESSION["letter"] = $letter;
+        $_SESSION["bib_" . "letter"] = $letter;
         redirectTo(ROOT, PAGE);
     }
 }
@@ -177,21 +177,21 @@ function pushPreviousPage($pushed = PAGE)
 {
     haveSession();
     if (
-        !isset($_SESSION["prevPage"])
+        !isset($_SESSION["bib_" . "prevPage"])
     ) {
-        $_SESSION["prevPage"] = [];
+        $_SESSION["bib_" . "prevPage"] = [];
     }
-    if (in_array($pushed, $_SESSION["prevPage"], true)) {
+    if (in_array($pushed, $_SESSION["bib_" . "prevPage"], true)) {
         $keep = [];
-        foreach ($_SESSION["prevPage"] as $page) {
+        foreach ($_SESSION["bib_" . "prevPage"] as $page) {
             if ($page == $pushed) {
                 break;
             }
             array_push($keep, $page);
         }
-        $_SESSION["prevPage"] = $keep;
+        $_SESSION["bib_" . "prevPage"] = $keep;
     }
-    array_push($_SESSION["prevPage"], $pushed);
+    array_push($_SESSION["bib_" . "prevPage"], $pushed);
 }
 
 
@@ -203,7 +203,7 @@ function popPreviousPage()
     ) {
         return PAGE;
     }
-    return array_pop($_SESSION["prevPage"]);
+    return array_pop($_SESSION["bib_" . "prevPage"]);
 }
 
 
@@ -216,7 +216,7 @@ function getPreviousPage()
     ) {
         return PAGE;
     }
-    return $_SESSION["prevPage"][sizeof($_SESSION["prevPage"])];
+    return $_SESSION["bib_" . "prevPage"][sizeof($_SESSION["bib_" . "prevPage"])];
 }
 
 
