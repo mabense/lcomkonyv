@@ -4,11 +4,7 @@ require_once(CONFIG_FILE);
 require_once(LIB_DIR . "feedback_log.php");
 require_once(LIB_DIR . "session.php");
 haveSession();
-/* * /
-require_once(LANGUAGE_FILE);
-/*/
 require_once(LANG_DIR . getLang() . ".php");
-/* */
 require_once(LIB_DIR . "public_func.php");
 require_once(LIB_DIR . "dom.php");
 

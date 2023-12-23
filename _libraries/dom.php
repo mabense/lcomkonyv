@@ -152,7 +152,7 @@ function domMakeToolbar($pages)
         }
     }
     $langPick = $dom->createElement("select");
-    $langPick->setAttribute("style", "width: 50%; background-color: transparent; ");
+    $langPick->setAttribute("class", "select-js");
     $route = "./?newlang=";
     $langPick->setAttribute("onchange", "window.location='$route' + this.value;");
     $lang = getLang();

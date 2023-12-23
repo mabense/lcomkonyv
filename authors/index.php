@@ -27,6 +27,8 @@ resetTableAllKeys();
 
 pushPreviousPage();
 
+handleLetter();
+
 $page = PAGE;
 $location = getLocation();
 
@@ -60,19 +62,23 @@ if (newDOMDocument(BASE_TEMPLATE)) {
     global $dom;
     // $dom = new DOMDocument();
     $letterSelect = $dom->getElementById("letter");
+    $letterSelect->setAttribute("class", "select-js select-js-large");
+    $route = "./?letter=";
+    $letterSelect->setAttribute("onchange", "window.location='$route' + this.value;");
     foreach ($letters as $letter) {
         $opt = $dom->createElement("option", $letter);
         $opt->setAttribute("id", "letter-" . $letter);
         domSetString("letter-" . $letter, $letter);
         $letterSelect->appendChild($opt);
     }
-
-    if (fromPOST("letter") == null) {
+    if (fromSESSION("letter") == null) {
         $letter = "A";
     } else {
-        $letter = fromPOST("letter");
+        $letter = fromSESSION("letter");
     }
-    $dom->getElementById("letter-$letter")->setAttribute("selected", "selected");
+    $selectedLetter = $dom->getElementById("letter-$letter");
+    $selectedLetter->setAttribute("selected", "selected");
+    
 
     $conditions = "`author` LIKE ?";
     $types = "s";

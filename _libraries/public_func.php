@@ -162,7 +162,18 @@ function handleNewLang()
 }
 
 
-function pushPreviousPage()
+function handleLetter()
+{
+    haveSession();
+    $letter = fromGET("letter");
+    if (isset($letter)) {
+        $_SESSION["letter"] = $letter;
+        redirectTo(ROOT, PAGE);
+    }
+}
+
+
+function pushPreviousPage($pushed = PAGE)
 {
     haveSession();
     if (
@@ -170,17 +181,17 @@ function pushPreviousPage()
     ) {
         $_SESSION["prevPage"] = [];
     }
-    if (in_array(PAGE, $_SESSION["prevPage"], true)) {
+    if (in_array($pushed, $_SESSION["prevPage"], true)) {
         $keep = [];
         foreach ($_SESSION["prevPage"] as $page) {
-            if ($page == PAGE) {
+            if ($page == $pushed) {
                 break;
             }
             array_push($keep, $page);
         }
         $_SESSION["prevPage"] = $keep;
     }
-    array_push($_SESSION["prevPage"], PAGE);
+    array_push($_SESSION["prevPage"], $pushed);
 }
 
 

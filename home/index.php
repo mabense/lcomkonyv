@@ -15,6 +15,8 @@ handleMissingPage();
 
 handleAction();
 
+pushPreviousPage();
+
 if (newDOMDocument(BASE_TEMPLATE)) {
 
     domMakeToolbarLoggedIn();
