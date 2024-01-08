@@ -1,6 +1,6 @@
 <?php
 define("ROOT", ".." . DIRECTORY_SEPARATOR);
-define("PAGE", "delete_page");
+define("PAGE", "delete_location");
 
 require_once(ROOT . "const.php");
 require_once(ROOT . "requirements.php");
